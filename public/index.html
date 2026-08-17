@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudySphere - AI Academic Companion</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+      <div class="login-container">
+        <div class="login-logo">
+          <span class="logo-icon">🎓</span>
+          <h1>StudySphere</h1>
+          <p class="login-subtitle">AI-Powered Academic Companion</p>
+        </div>
+        <form id="login-form" class="login-form">
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" value="alex@studysphere.com" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" value="demo123" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+          <p class="login-hint">Demo: alex@studysphere.com / demo123</p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="main-app" class="main-app hidden">
+      <!-- Sidebar -->
+      <nav id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+          <span class="logo-icon-sm">🎓</span>
+          <span class="sidebar-title">StudySphere</span>
+        </div>
+        <ul class="nav-links">
+          <li><a href="#" data-page="dashboard" class="nav-link active"><span class="nav-icon">📊</span> Dashboard</a></li>
+          <li><a href="#" data-page="assignments" class="nav-link"><span class="nav-icon">📝</span> Assignments</a></li>
+          <li><a href="#" data-page="calendar" class="nav-link"><span class="nav-icon">📅</span> Calendar</a></li>
+          <li><a href="#" data-page="study-plans" class="nav-link"><span class="nav-icon">📋</span> Study Plans</a></li>
+          <li><a href="#" data-page="community" class="nav-link"><span class="nav-icon">👥</span> Community</a></li>
+          <li><a href="#" data-page="leaderboard" class="nav-link"><span class="nav-icon">🏆</span> Leaderboard</a></li>
+          <li><a href="#" data-page="analytics" class="nav-link"><span class="nav-icon">📈</span> Analytics</a></li>
+        </ul>
+        <div class="sidebar-footer">
+          <div class="user-info" id="sidebar-user">
+            <span class="user-avatar">🎓</span>
+            <div class="user-details">
+              <span class="user-name">Alex Chen</span>
+              <span class="user-level">Level 1</span>
+            </div>
+          </div>
+          <button id="logout-btn" class="btn btn-ghost btn-sm">Logout</button>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main id="content" class="content">
+        <!-- Pages will be rendered here -->
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div id="modal-content" class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/pages.js"></script>
+  <script src="/js/components.js"></script>
+</body>
+</html>

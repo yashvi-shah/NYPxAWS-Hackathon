@@ -1,0 +1,13 @@
+{
+  "name": "studysphere",
+  "version": "1.0.0",
+  "description": "AI-powered academic companion for polytechnic students",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node seed.js"
+  },
+  "keywords": ["education", "ai", "gamification", "academic"],
+  "author": "StudySphere Team",
+  "license": "MIT"
+}
