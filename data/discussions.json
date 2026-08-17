@@ -1,0 +1,76 @@
+[
+  {
+    "id": "disc1",
+    "title": "Tips for DSP lab report writing",
+    "content": "Just finished my DSP lab report. Here are some tips: 1) Always include your MATLAB code in the appendix, 2) Label all axes on your plots, 3) Discuss signal-to-noise ratio in your analysis section. The lecturer is strict about proper FFT windowing explanations.",
+    "module": "EE3205 - DSP",
+    "tags": [
+      "tips",
+      "lab-report",
+      "dsp"
+    ],
+    "userId": "user3",
+    "userName": "Marcus Tan",
+    "replies": [
+      {
+        "userId": "user1",
+        "userName": "Alex Chen",
+        "content": "Thanks! Do we need to include the theoretical derivation of the DFT or just explain the concept?",
+        "date": "2026-08-15T11:45:57.767Z"
+      },
+      {
+        "userId": "user3",
+        "userName": "Marcus Tan",
+        "content": "Just explain the concept and reference the textbook for the full derivation. Focus more on your experimental results and analysis.",
+        "date": "2026-08-15T23:45:57.767Z"
+      }
+    ],
+    "upvotes": 12,
+    "createdAt": "2026-08-14T11:45:57.767Z"
+  },
+  {
+    "id": "disc2",
+    "title": "Best ML libraries for the classification assignment?",
+    "content": "For the IT3402 ML assignment, should we stick with scikit-learn or can we use TensorFlow/Keras? Also, is data augmentation allowed since the dataset is small?",
+    "module": "IT3402 - AI & ML",
+    "tags": [
+      "machine-learning",
+      "python",
+      "assignment"
+    ],
+    "userId": "user2",
+    "userName": "Sarah Lee",
+    "replies": [
+      {
+        "userId": "user5",
+        "userName": "Jake Wong",
+        "content": "Prof said scikit-learn is preferred but TensorFlow is allowed. Data augmentation is fine as long as you document your approach.",
+        "date": "2026-08-16T11:45:57.767Z"
+      }
+    ],
+    "upvotes": 8,
+    "createdAt": "2026-08-13T11:45:57.767Z"
+  },
+  {
+    "id": "disc3",
+    "title": "Study group for Power Systems exam",
+    "content": "Anyone want to form a study group for the EE3101 midterm? Planning to meet at the library on Saturday 2pm. Will be covering load flow analysis and fault calculations.",
+    "module": "EE3101 - Power Systems",
+    "tags": [
+      "study-group",
+      "exam-prep"
+    ],
+    "userId": "user1",
+    "userName": "Alex Chen",
+    "replies": [
+      {
+        "userId": "user3",
+        "userName": "Marcus Tan",
+        "content": "Count me in! I can bring my notes on symmetrical components.",
+        "date": "2026-08-16T23:45:57.767Z"
+      }
+    ],
+    "upvotes": 5,
+    "createdAt": "2026-08-16T11:45:57.767Z"
+  }
+]

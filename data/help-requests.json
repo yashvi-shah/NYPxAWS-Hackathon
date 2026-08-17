@@ -1,0 +1,68 @@
+[
+  {
+    "id": "help1",
+    "title": "Need help with Arduino sensor calibration",
+    "description": "My DHT22 temperature sensor is giving inaccurate readings. Already tried changing the pull-up resistor. Anyone experienced with IoT sensors?",
+    "category": "Practical",
+    "module": "EE4301 - IoT Systems",
+    "urgency": "high",
+    "userId": "user1",
+    "userName": "Alex Chen",
+    "status": "open",
+    "responses": [
+      {
+        "userId": "user3",
+        "userName": "Marcus Tan",
+        "message": "Try adding a 100nF capacitor across the power pins. Also make sure you're waiting at least 2 seconds between readings. I had the same issue last semester.",
+        "date": "2026-08-16T11:45:57.767Z"
+      }
+    ],
+    "createdAt": "2026-08-15T11:45:57.767Z"
+  },
+  {
+    "id": "help2",
+    "title": "SolidWorks assembly constraints help",
+    "description": "Struggling with mate constraints in my gearbox assembly. The gears keep moving incorrectly when I add the gear mate.",
+    "category": "Practical",
+    "module": "ME2401 - CAD/CAM",
+    "urgency": "medium",
+    "userId": "user3",
+    "userName": "Marcus Tan",
+    "status": "open",
+    "responses": [],
+    "createdAt": "2026-08-16T11:45:57.767Z"
+  },
+  {
+    "id": "help3",
+    "title": "Python scikit-learn: Feature selection for classification",
+    "description": "Working on ML assignment. Dataset has 50+ features. What's the best approach for feature selection before building a RandomForest classifier?",
+    "category": "Academic",
+    "module": "IT3402 - AI & ML",
+    "urgency": "medium",
+    "userId": "user1",
+    "userName": "Alex Chen",
+    "status": "open",
+    "responses": [
+      {
+        "userId": "user2",
+        "userName": "Sarah Lee",
+        "message": "Start with correlation matrix to remove highly correlated features. Then try SelectKBest or use feature_importances_ from a preliminary Random Forest. Also consider PCA if features are numerical.",
+        "date": "2026-08-16T23:45:57.767Z"
+      }
+    ],
+    "createdAt": "2026-08-16T11:45:57.767Z"
+  },
+  {
+    "id": "help4",
+    "title": "Need 3D printer access for prototype",
+    "description": "Looking for someone who has access to a 3D printer or knows the FabLab booking process. Need to print a custom enclosure for my IoT project by Friday.",
+    "category": "Practical",
+    "module": "",
+    "urgency": "high",
+    "userId": "user1",
+    "userName": "Alex Chen",
+    "status": "open",
+    "responses": [],
+    "createdAt": "2026-08-17T11:45:57.767Z"
+  }
+]
