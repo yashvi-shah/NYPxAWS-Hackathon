@@ -32,7 +32,7 @@ function parseHash() {
 }
 
 export function navigate(id, { replace = false } = {}) {
-  if (!routes.has(id)) id = 'dashboard';
+  if (!routes.has(id)) id = 'today';
   const hash = `#/${id}`;
   if (window.location.hash === hash) {
     mount(id);
@@ -57,7 +57,7 @@ async function mount(id) {
   closeOverlay({ silent: true });
   clearLayer('page');
   listeners.forEach((fn) => fn(route));
-  document.title = `${route.title} · StudySphere`;
+  document.title = `${route.title} · Gravity`;
 
   try {
     await route.render(view, { token, isCurrent: () => token === renderToken });
@@ -88,7 +88,7 @@ export function refresh() {
   return activeId ? mount(activeId) : Promise.resolve();
 }
 
-export function startRouter(fallback = 'dashboard') {
+export function startRouter(fallback = 'today') {
   if (!started) {
     started = true;
     window.addEventListener('hashchange', () => {

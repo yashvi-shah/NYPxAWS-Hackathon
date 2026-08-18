@@ -1,7 +1,7 @@
 /* ==========================================================================
-   community.js — peers, kept useful and quiet.
-   Two things students actually need from each other: a hand with something
-   specific, and a place to compare notes on a module.
+   community.js — Get help, share knowledge, and collaborate.
+   Tabs for Help Requests and Discussions, card-based posts with urgency
+   badges, respond buttons, and inline replies.
    ========================================================================== */
 
 import { html, raw, render } from '../lib/dom.js';
@@ -10,20 +10,19 @@ import { api } from '../services/api.js';
 import { session } from '../services/store.js';
 import { setLayer, formValues } from '../core/actions.js';
 import { pageLoading, emptyState, errorState } from '../ui/states.js';
-import { panel, avatar, railClass } from '../ui/bits.js';
+import { avatar } from '../ui/bits.js';
 import { openModal, closeOverlay } from '../ui/overlay.js';
 import { mutate } from '../features/mutate.js';
 import { timeAgo, moduleCode, plural } from '../lib/format.js';
 
 const CATEGORIES = ['Academic', 'Practical', 'Project', 'Career'];
-const URGENCY_TONE = { high: 'badge-risk', medium: 'badge-warn', low: '' };
 
-const state = { tab: 'help', category: 'all' };
+const state = { tab: 'help' };
 
 let data = { help: [], discussions: [] };
 
 export async function render_(view, ctx) {
-  render(view, pageLoading({ title: 'Community', note: 'Loading what your peers are asking…', kind: 'list' }));
+  render(view, pageLoading({ title: 'Community', note: 'Loading what your peers are asking...', kind: 'list' }));
 
   const [help, discussions] = await Promise.allSettled([api.helpRequests(), api.discussions()]);
   if (!ctx.isCurrent()) return;
@@ -47,14 +46,7 @@ export async function render_(view, ctx) {
 
   render(view, html`
     ${header()}
-    <div class="tabs" role="tablist">
-      <button class="tab" role="tab" data-act="setTab" data-tab="help" aria-selected="${state.tab === 'help' ? 'true' : 'false'}">
-        Help requests<span class="count">${data.help.length}</span>
-      </button>
-      <button class="tab" role="tab" data-act="setTab" data-tab="discussions" aria-selected="${state.tab === 'discussions' ? 'true' : 'false'}">
-        Discussions<span class="count">${data.discussions.length}</span>
-      </button>
-    </div>
+    ${tabs()}
     <div id="community-body"></div>
   `);
 
@@ -66,12 +58,29 @@ function header() {
     <div class="page-head">
       <div>
         <h1>Community</h1>
-        <p class="page-sub">Ask for something specific, or share what you worked out the hard way.</p>
+        <p class="page-sub">Get help, share knowledge, and collaborate</p>
       </div>
       <div class="page-actions">
-        <button class="btn btn-primary" data-act="newHelp">${icon('helpCircle', { size: 15 })}Ask for help</button>
-        <button class="btn" data-act="newDiscussion">${icon('message', { size: 15 })}Start a discussion</button>
+        <button class="btn btn-primary" data-act="newHelp">${icon('helpCircle', { size: 15 })}Ask for Help</button>
+        <button class="btn" data-act="newDiscussion">${icon('message', { size: 15 })}New Discussion</button>
       </div>
+    </div>
+  `;
+}
+
+function tabs() {
+  return html`
+    <div class="cm-tabs" role="tablist">
+      <button class="cm-tab ${state.tab === 'help' ? 'is-active' : ''}" role="tab"
+              data-act="setTab" data-tab="help" aria-selected="${state.tab === 'help' ? 'true' : 'false'}">
+        ${icon('helpCircle', { size: 14 })}
+        Help Requests (${data.help.length})
+      </button>
+      <button class="cm-tab ${state.tab === 'discussions' ? 'is-active' : ''}" role="tab"
+              data-act="setTab" data-tab="discussions" aria-selected="${state.tab === 'discussions' ? 'true' : 'false'}">
+        ${icon('message', { size: 14 })}
+        Discussions (${data.discussions.length})
+      </button>
     </div>
   `;
 }
@@ -87,84 +96,63 @@ function renderBody() {
    -------------------------------------------------------------------------- */
 
 function helpSection() {
-  const items = state.category === 'all'
-    ? data.help
-    : data.help.filter((r) => r.category === state.category);
+  if (!data.help.length) {
+    return html`
+      <section class="card" style="padding:var(--sp-5)">
+        ${emptyState({
+          mark: 'helpCircle',
+          title: 'No one has asked for help yet.',
+          message: 'If you are stuck on something specific, asking here is faster than working around it.',
+          action: { label: 'Ask for help', act: 'newHelp', icon: 'helpCircle' },
+          inline: true,
+        })}
+      </section>
+    `;
+  }
 
   return html`
-    <div class="stack">
-      <div class="toolbar">
-        <div class="toolbar-group" role="group" aria-label="Filter by category">
-          <button class="chip" data-act="setCategory" data-category="all" aria-pressed="${state.category === 'all' ? 'true' : 'false'}">
-            All<span class="count">${data.help.length}</span>
-          </button>
-          ${CATEGORIES.map((c) => html`
-            <button class="chip" data-act="setCategory" data-category="${c}" aria-pressed="${state.category === c ? 'true' : 'false'}">
-              ${c}<span class="count">${data.help.filter((r) => r.category === c).length}</span>
-            </button>
-          `)}
-        </div>
-      </div>
-
-      ${panel({
-        body: items.length
-          ? html`<div>${items.map(helpCard)}</div>`
-          : emptyState({
-            mark: 'helpCircle',
-            title: state.category === 'all' ? 'No one has asked for help yet.' : `Nothing under ${state.category}.`,
-            message: 'If you are stuck on something specific — a lab technique, a toolchain, a concept — asking here is faster than working around it.',
-            action: { label: 'Ask for help', act: 'newHelp', icon: 'helpCircle' },
-            inline: true,
-          }),
-      })}
+    <div class="cm-posts">
+      ${data.help.map(helpCard)}
     </div>
   `;
 }
 
 function helpCard(request) {
   const responses = request.responses || [];
-  const answered = responses.length > 0;
   const mine = request.userId === session.id;
 
   return html`
-    <article class="post ${railClass(answered ? 'ok' : request.urgency === 'high' ? 'risk' : 'none')}"
-             style="padding-left:calc(var(--sp-4) + 3px)">
-      <div class="post-head">
-        <div style="min-width:0">
-          <h4 class="post-title">${request.title}</h4>
-          <div class="post-byline">
-            ${avatar({ name: request.userName })}
-            <span>${mine ? 'You' : request.userName}</span>
-            ${request.module ? html`<span>·</span><span>${moduleCode(request.module)}</span>` : raw('')}
-            <span>·</span><span>${request.category}</span>
-            ${request.createdAt ? html`<span>·</span><span>${timeAgo(request.createdAt)}</span>` : raw('')}
+    <article class="cm-post card">
+      <div class="cm-post-header">
+        <div class="cm-post-header-left">
+          <h4 class="cm-post-title">${request.title}</h4>
+          <div class="cm-post-byline">
+            by ${mine ? 'You' : request.userName}
+            ${request.module ? html` &middot; ${moduleCode(request.module)}` : raw('')}
+            &middot; ${request.category}
           </div>
         </div>
-        <div class="row gap-2">
-          ${answered
-            ? html`<span class="badge badge-ok">${icon('check', { size: 12 })}${plural(responses.length, 'reply', 'ies')}</span>`
-            : html`<span class="badge ${URGENCY_TONE[request.urgency] || ''}">${request.urgency} urgency</span>`}
-        </div>
+        <span class="cm-urgency cm-urgency-${request.urgency || 'low'}">${(request.urgency || 'low').toUpperCase()}</span>
       </div>
 
-      <p class="post-body">${request.description}</p>
+      <p class="cm-post-body">${request.description}</p>
 
       ${responses.length ? html`
-        <div class="replies">
+        <div class="cm-responses-count">${responses.length} response${responses.length !== 1 ? 's' : ''}:</div>
+        <div class="cm-replies">
           ${responses.map((r) => html`
-            <div class="reply">
-              <div class="reply-meta">${r.userId === session.id ? 'You' : r.userName} · ${timeAgo(r.date)}</div>
-              <p>${r.message}</p>
+            <div class="cm-reply">
+              <div class="cm-reply-meta">${r.userId === session.id ? 'You' : r.userName} &middot; ${timeAgo(r.date)}</div>
+              <p class="cm-reply-text">${r.message}</p>
             </div>
           `)}
         </div>
       ` : raw('')}
 
-      <div class="post-foot">
+      <div class="cm-post-footer">
         <button class="btn btn-sm" data-act="respondTo" data-id="${request.id}" data-title="${request.title}">
-          ${icon('reply', { size: 14 })}${answered ? 'Add an answer' : 'Help out'}
+          ${icon('message', { size: 14 })}Respond
         </button>
-        ${!answered && !mine ? html`<span class="caption">No one has answered yet.</span>` : raw('')}
       </div>
     </article>
   `;
@@ -175,17 +163,25 @@ function helpCard(request) {
    -------------------------------------------------------------------------- */
 
 function discussionSection() {
-  return panel({
-    body: data.discussions.length
-      ? html`<div>${data.discussions.map(discussionCard)}</div>`
-      : emptyState({
-        mark: 'message',
-        title: 'No discussions yet.',
-        message: 'Start one with something you wish you had known two weeks ago — a shortcut, a resource, a warning about an assignment.',
-        action: { label: 'Start a discussion', act: 'newDiscussion', icon: 'message' },
-        inline: true,
-      }),
-  });
+  if (!data.discussions.length) {
+    return html`
+      <section class="card" style="padding:var(--sp-5)">
+        ${emptyState({
+          mark: 'message',
+          title: 'No discussions yet.',
+          message: 'Start one with something you wish you had known two weeks ago.',
+          action: { label: 'Start a discussion', act: 'newDiscussion', icon: 'message' },
+          inline: true,
+        })}
+      </section>
+    `;
+  }
+
+  return html`
+    <div class="cm-posts">
+      ${data.discussions.map(discussionCard)}
+    </div>
+  `;
 }
 
 function discussionCard(discussion) {
@@ -194,48 +190,46 @@ function discussionCard(discussion) {
   const mine = discussion.userId === session.id;
 
   return html`
-    <article class="post">
-      <div class="post-head">
-        <div style="min-width:0">
-          <h4 class="post-title">${discussion.title}</h4>
-          <div class="post-byline">
-            ${avatar({ name: discussion.userName })}
-            <span>${mine ? 'You' : discussion.userName}</span>
-            ${discussion.module ? html`<span>·</span><span>${moduleCode(discussion.module)}</span>` : raw('')}
-            ${discussion.createdAt ? html`<span>·</span><span>${timeAgo(discussion.createdAt)}</span>` : raw('')}
+    <article class="cm-post card">
+      <div class="cm-post-header">
+        <div class="cm-post-header-left">
+          <h4 class="cm-post-title">${discussion.title}</h4>
+          <div class="cm-post-byline">
+            by ${mine ? 'You' : discussion.userName}
+            ${discussion.module ? html` &middot; ${moduleCode(discussion.module)}` : raw('')}
+            ${discussion.createdAt ? html` &middot; ${timeAgo(discussion.createdAt)}` : raw('')}
           </div>
         </div>
-        <div class="row gap-2">
-          ${Number(discussion.upvotes) > 0 ? html`<span class="badge">${icon('trendUp', { size: 12 })}${discussion.upvotes}</span>` : raw('')}
-          <span class="badge">${plural(replies.length, 'reply', 'ies')}</span>
-        </div>
+        ${replies.length ? html`
+          <span class="cm-reply-count">${plural(replies.length, 'reply', 'ies')}</span>
+        ` : raw('')}
       </div>
 
-      <p class="post-body clamp-2">${discussion.content}</p>
+      <p class="cm-post-body">${discussion.content}</p>
 
       ${(discussion.tags || []).length ? html`
-        <div class="row gap-2 wrap">
-          ${(discussion.tags || []).map((t) => html`<span class="tag">#${t}</span>`)}
+        <div class="cm-tags">
+          ${(discussion.tags || []).map((t) => html`<span class="cm-tag">#${t}</span>`)}
         </div>
       ` : raw('')}
 
       ${shown.length ? html`
-        <div class="replies">
+        <div class="cm-replies">
           ${shown.map((r) => html`
-            <div class="reply">
-              <div class="reply-meta">${r.userId === session.id ? 'You' : r.userName} · ${timeAgo(r.date)}</div>
-              <p>${r.content}</p>
+            <div class="cm-reply">
+              <div class="cm-reply-meta">${r.userId === session.id ? 'You' : r.userName} &middot; ${timeAgo(r.date)}</div>
+              <p class="cm-reply-text">${r.content}</p>
             </div>
           `)}
           ${replies.length > shown.length
-            ? html`<span class="caption">${replies.length - shown.length} more ${replies.length - shown.length === 1 ? 'reply' : 'replies'}</span>`
+            ? html`<span class="cm-more-replies">${replies.length - shown.length} more ${replies.length - shown.length === 1 ? 'reply' : 'replies'}</span>`
             : raw('')}
         </div>
       ` : raw('')}
 
-      <div class="post-foot">
+      <div class="cm-post-footer">
         <button class="btn btn-sm" data-act="replyTo" data-id="${discussion.id}" data-title="${discussion.title}">
-          ${icon('reply', { size: 14 })}Reply
+          ${icon('message', { size: 14 })}Respond
         </button>
       </div>
     </article>
@@ -262,8 +256,8 @@ function openHelpForm() {
           <div class="field">
             <label for="hf-category">Category</label>
             <select class="select" id="hf-category" name="category">
-              <option value="Academic">Academic — concepts, marking, theory</option>
-              <option value="Practical">Practical — soldering, CAD, 3D printing, lab kit</option>
+              <option value="Academic">Academic</option>
+              <option value="Practical">Practical</option>
               <option value="Project">Group project</option>
               <option value="Career">Career and internships</option>
             </select>
@@ -271,9 +265,9 @@ function openHelpForm() {
           <div class="field">
             <label for="hf-urgency">How urgent?</label>
             <select class="select" id="hf-urgency" name="urgency">
-              <option value="low">Low — whenever</option>
-              <option value="medium" selected>Medium — this week</option>
-              <option value="high">High — blocking me now</option>
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
             </select>
           </div>
         </div>
@@ -383,7 +377,7 @@ function openResponder({ id, title, kind }) {
         <div class="field">
           <label for="rf-body">${isHelp ? 'Your answer' : 'Your reply'}</label>
           <textarea class="textarea" id="rf-body" name="body" required style="min-height:120px"
-                    placeholder="${isHelp ? 'What worked for you, step by step.' : 'Add to the thread…'}"></textarea>
+                    placeholder="${isHelp ? 'What worked for you, step by step.' : 'Add to the thread...'}"></textarea>
         </div>
       </form>
     `,
@@ -418,12 +412,19 @@ function registerActions() {
     retryCommunity: reload,
     setTab: (ds) => {
       state.tab = ds.tab;
-      document.querySelectorAll('[data-tab]').forEach((t) => {
-        t.setAttribute('aria-selected', t.dataset.tab === state.tab ? 'true' : 'false');
-      });
+      const view = document.getElementById('view');
+      if (view) {
+        const tabsEl = view.querySelector('.cm-tabs');
+        if (tabsEl) {
+          tabsEl.querySelectorAll('.cm-tab').forEach((t) => {
+            const isActive = t.dataset.tab === state.tab;
+            t.classList.toggle('is-active', isActive);
+            t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          });
+        }
+      }
       renderBody();
     },
-    setCategory: (ds) => { state.category = ds.category; renderBody(); },
     newHelp: openHelpForm,
     newDiscussion: openDiscussionForm,
     respondTo: (ds) => openResponder({ id: ds.id, title: ds.title, kind: 'help' }),

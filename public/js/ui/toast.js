@@ -61,13 +61,13 @@ export const toastWarn = (title, opts = {}) => toast(title, { ...opts, tone: 'wa
  * they go to the console for whoever is debugging.
  */
 export function toastError(title, error, opts = {}) {
-  if (error) console.error('[StudySphere]', error);
+  if (error) console.error('[Gravity]', error);
   const offline = error && error.isOffline;
   return toast(title, {
     ...opts,
     tone: 'error',
     message: opts.message || (offline
-      ? 'StudySphere could not be reached. Check your connection and try again.'
+      ? 'Gravity could not be reached. Check your connection and try again.'
       : 'Nothing was changed. Please try again.'),
   });
 }

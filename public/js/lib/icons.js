@@ -14,6 +14,7 @@ const PATHS = {
   calendar:   '<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3.5V6M16 3.5V6"/>',
   community:  '<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19.5c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M16 6.2a3 3 0 0 1 0 5.6M17.5 19.5c0-2-.6-3.5-1.6-4.6"/>',
   leaderboard:'<path d="M9 20V9h6v11M4 20v-6h5M15 20h5v-9"/><path d="M3 20h18"/>',
+  chat:       '<path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-5.2-1.6L3 21l1.6-3.8A9 9 0 0 1 3 12a9 9 0 0 1 9-9 9 9 0 0 1 9 9z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/>',
 
   /* --- actions --- */
   plus:       '<path d="M12 5v14M5 12h14"/>',
@@ -61,6 +62,11 @@ const PATHS = {
   moon:       '<path d="M19 14.5A7.5 7.5 0 0 1 9.5 5a7.5 7.5 0 1 0 9.5 9.5z"/>',
   flag:       '<path d="M6 20V4.5h9l-1.2 3.5H19l-1.5 4.5H6"/>',
   zap:        '<path d="M13.5 3.5L6 13.5h4.5L9.5 20.5 17.5 10H13z"/>',
+  send:       '<path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4z"/>',
+  attach:     '<path d="M14.5 3.5a4.5 4.5 0 0 1 0 6.36L8.15 16.2a3 3 0 0 1-4.24-4.24l6.36-6.36a1.5 1.5 0 0 1 2.12 2.12L6.03 14.09"/>',
+  image:      '<rect x="3.5" y="3.5" width="17" height="17" rx="2"/><circle cx="9" cy="9.5" r="1.5"/><path d="M20.5 14.5L16 10l-8.5 10.5"/>',
+  file:       '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M10 13h4M10 17h4M10 9h1"/>',
+  sparkle:    '<path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>',
 };
 
 /**
@@ -81,7 +87,7 @@ export function icon(name, opts = {}) {
   );
 }
 
-/** The StudySphere mark: rising workload bars inside the app tile. */
+/** The Gravity mark: rising workload bars inside the app tile. */
 export function logoMark() {
   return raw(
     '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" ' +

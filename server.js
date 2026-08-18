@@ -645,6 +645,6 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`🎓 StudySphere is running at http://localhost:${PORT}`);
+  console.log(`Gravity is running at http://localhost:${PORT}`);
   console.log(`📚 API available at http://localhost:${PORT}/api/`);
 });

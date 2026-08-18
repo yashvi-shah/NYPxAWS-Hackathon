@@ -1,5 +1,5 @@
 /* ==========================================================================
-   assignments.js — every commitment, built for scanning.
+   commitments.js — every commitment, built for scanning.
    One row tells you what it is, when it lands, what it's worth, how far along
    it is and how much work is left, without opening anything.
    ========================================================================== */
@@ -68,7 +68,7 @@ export async function render_(view, ctx) {
         body: emptyState({
           mark: 'inbox',
           title: 'Nothing here yet.',
-          message: 'Add your first commitment — title, module, deadline and how much it counts for. StudySphere handles the ordering and the timing.',
+          message: 'Add your first commitment — title, module, deadline and how much it counts for. Gravity handles the ordering and the timing.',
           action: { label: 'Add a commitment', act: 'addAssignment', icon: 'plus' },
         }),
       })}

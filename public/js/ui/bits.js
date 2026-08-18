@@ -40,7 +40,7 @@ export function priorityBadge(assignment) {
   const tone = priorityTone(assignment);
   return html`
     <span class="badge badge-strong ${TONE_CLASS[tone] || ''} ${tone === 'none' ? 'badge-dot' : ''}"
-          data-tip="Priority score ${assignment.priorityScore ?? '—'}/100 from StudySphere's ranking">
+          data-tip="Priority score ${assignment.priorityScore ?? '—'}/100 from Gravity's ranking">
       ${priorityText(assignment)}
     </span>
   `;

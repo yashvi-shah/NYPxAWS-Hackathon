@@ -28,7 +28,7 @@ async function request(endpoint, { method = 'GET', body, signal } = {}) {
     });
   } catch (err) {
     if (err && err.name === 'AbortError') throw err;
-    throw new ApiError('Could not reach StudySphere.', { endpoint });
+    throw new ApiError('Could not reach Gravity.', { endpoint });
   }
 
   const text = await res.text();

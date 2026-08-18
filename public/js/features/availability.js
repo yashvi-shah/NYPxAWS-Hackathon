@@ -25,7 +25,7 @@ export function openAvailability() {
 
   openModal({
     title: 'Your available study time',
-    description: 'Everything StudySphere says about pressure is measured against these hours. Be honest rather than optimistic.',
+    description: 'Everything Gravity says about pressure is measured against these hours. Be honest rather than optimistic.',
     body: html`
       <div class="col gap-3" id="availability-rows">
         ${ORDER.map((day) => html`
@@ -104,7 +104,7 @@ function syncTotal() {
   });
   target.textContent = total > 0
     ? `That is ${fmtHours(total)} of study time a week to spread your work across.`
-    : 'With no hours available, StudySphere can only show deadlines — not whether you can meet them.';
+    : 'With no hours available, Gravity can only show deadlines — not whether you can meet them.';
 }
 
 /** Small inline control used on the dashboard and workload pages. */

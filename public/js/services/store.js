@@ -7,9 +7,9 @@
 import { api } from './api.js';
 import { dayKey } from '../lib/format.js';
 
-const SESSION_KEY = 'studysphere.session.v1';
+const SESSION_KEY = 'gravity.session.v1';
 const LEGACY_SESSION_KEY = 'studysphere_user';
-const PREFS_KEY = 'studysphere.prefs.v1';
+const PREFS_KEY = 'gravity.prefs.v1';
 
 /* --------------------------------------------------------------------------
    Preferences

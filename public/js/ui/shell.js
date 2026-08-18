@@ -15,13 +15,14 @@ import { openAssignmentDetail } from '../features/assignmentDetail.js';
 import { firstName, initials, weekdayLong, monthLong } from '../lib/format.js';
 
 export const NAV = [
-  { id: 'dashboard',   label: 'Today',       icon: 'dashboard',   title: 'Today', group: 'primary' },
-  { id: 'assignments', label: 'Commitments', icon: 'assignments', title: 'Commitments', group: 'primary' },
+  { id: 'today',       label: 'Today',       icon: 'dashboard',   title: 'Today', group: 'primary' },
+  { id: 'commitments', label: 'Commitments', icon: 'assignments', title: 'Commitments', group: 'primary' },
   { id: 'workload',    label: 'Workload',    icon: 'workload',    title: 'Workload', group: 'primary' },
   { id: 'study-plans', label: 'Plans',       icon: 'plans',       title: 'Study plans', group: 'primary' },
   { id: 'calendar',    label: 'Calendar',    icon: 'calendar',    title: 'Calendar', group: 'primary' },
+  { id: 'chat',        label: 'Chat',        icon: 'chat',        title: 'Chat', group: 'primary' },
   { id: 'community',   label: 'Community',   icon: 'community',   title: 'Community', group: 'secondary' },
-  { id: 'leaderboard', label: 'Progress',    icon: 'leaderboard', title: 'Progress', group: 'secondary' },
+  { id: 'progress',    label: 'Leaderboard', icon: 'leaderboard', title: 'Leaderboard', group: 'secondary' },
 ];
 
 const navFlags = new Map();
@@ -63,12 +64,12 @@ export function renderAuthScreen(root, { onSignedIn }) {
       <section class="auth-pitch">
         <div class="wordmark wordmark-lg">
           <span class="mark">${logoMark()}</span>
-          <span class="name">StudySphere</span>
+          <span class="name">Gravity</span>
         </div>
         <div>
           <h1>Know what to work on, and whether it actually fits.</h1>
           <p class="lede">
-            StudySphere reads your deadlines, weightings and confidence, then measures them
+            Gravity reads your deadlines, weightings and confidence, then measures them
             against the hours you really have — so a heavy week is something you plan for
             instead of something you discover.
           </p>
@@ -159,9 +160,9 @@ export function renderShell(root) {
     <div class="shell">
       <nav class="sidebar" aria-label="Main">
         <div class="sidebar-head">
-          <a class="wordmark" href="#/dashboard" data-act="goto" data-page="dashboard" aria-label="StudySphere home">
+          <a class="wordmark" href="#/today" data-act="goto" data-page="today" aria-label="Gravity home">
             <span class="mark">${logoMark()}</span>
-            <span class="name">StudySphere</span>
+            <span class="name">Gravity</span>
           </a>
         </div>
 
@@ -180,7 +181,7 @@ export function renderShell(root) {
 
       <div class="main">
         <header class="topbar">
-          <a class="wordmark topbar-brand" href="#/dashboard" data-act="goto" data-page="dashboard" style="display:none">
+          <a class="wordmark topbar-brand" href="#/today" data-act="goto" data-page="today" style="display:none">
             <span class="mark">${logoMark()}</span>
           </a>
           <span class="topbar-date">${weekdayLong(now)}, ${now.getDate()} ${monthLong(now.getMonth())}</span>

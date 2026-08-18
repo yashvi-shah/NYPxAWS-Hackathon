@@ -55,7 +55,7 @@ export async function render_(view, ctx) {
           mark: 'plans',
           title: 'Nothing planned yet.',
           message: open.length
-            ? 'Pick a commitment and StudySphere will break it into timed steps spread across the days you have left — so starting doesn\'t need a decision.'
+            ? 'Pick a commitment and Gravity will break it into timed steps spread across the days you have left — so starting doesn\'t need a decision.'
             : 'Add a commitment first, then build a plan around the time you have.',
           action: open.length
             ? { label: 'Build a plan', act: 'openPlanPicker', icon: 'plans' }
@@ -271,14 +271,14 @@ function aheadPanel(entries) {
               </div>
               <div class="stack-sm">
                 ${items.map((e) => html`
-                  <div class="row gap-2">
+                  <div class="plan-task-row">
+                    <span class="plan-task-title grow truncate">${e.title}</span>
+                    <span class="plan-task-dur">${e.minutes}m</span>
                     <button class="check" role="checkbox" aria-checked="false"
                             aria-label="Complete ${e.title}" data-act="toggleTask"
                             data-plan="${e.planId}" data-task="${e.taskId}" data-done="false">
                       ${icon('check', { size: 12 })}
                     </button>
-                    <span class="grow truncate meta">${e.title}</span>
-                    <span class="caption num">${e.minutes}m</span>
                   </div>
                 `)}
               </div>
@@ -334,15 +334,15 @@ function planCard(plan, assignments) {
             </div>
             <div class="stack-sm">
               ${tasks.map((task) => html`
-                <div class="row gap-2 ${task.completed ? 'is-done' : ''}">
+                <div class="plan-task-row ${task.completed ? 'is-done' : ''}">
+                  <span class="plan-task-title grow truncate">${task.title}</span>
+                  <span class="plan-task-dur">${task.duration}m</span>
                   <button class="check" role="checkbox" aria-checked="${task.completed ? 'true' : 'false'}"
                           aria-label="${task.completed ? 'Reopen' : 'Complete'} ${task.title}"
                           data-act="toggleTask" data-plan="${plan.id}" data-task="${task.id}"
                           data-done="${task.completed ? 'true' : 'false'}">
                     ${icon('check', { size: 12 })}
                   </button>
-                  <span class="grow truncate meta" style="${task.completed ? 'color:var(--ink-3);text-decoration:line-through' : ''}">${task.title}</span>
-                  <span class="caption num">${task.duration}m</span>
                 </div>
               `)}
             </div>
@@ -398,7 +398,7 @@ function openPlanPicker(assignments, plans) {
 
   openModal({
     title: 'Build a study plan',
-    description: 'StudySphere splits the work into steps and spreads them across the days you have left.',
+    description: 'Gravity splits the work into steps and spreads them across the days you have left.',
     wide: true,
     body: html`
       <div class="rows" style="border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden">
@@ -420,7 +420,7 @@ function openPlanPicker(assignments, plans) {
           `;
         })}
       </div>
-      <p class="caption">Rebuilding a plan leaves the old one in your history — the newest plan is the one StudySphere uses for timing.</p>
+      <p class="caption">Rebuilding a plan leaves the old one in your history — the newest plan is the one Gravity uses for timing.</p>
     `,
     actions: {
       pickPlan: (ds) => {

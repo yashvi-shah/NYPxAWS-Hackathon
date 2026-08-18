@@ -24,7 +24,7 @@ export function openAssignmentForm(assignment = null) {
     title: editing ? 'Edit commitment' : 'Add a commitment',
     description: editing
       ? 'Changes feed straight back into your priority order and workload.'
-      : 'Weightage and how confident you feel are what let StudySphere time this properly.',
+      : 'Weightage and how confident you feel are what let Gravity time this properly.',
     wide: true,
     body: html`
       <form id="assignment-form" data-act="submitAssignment" class="col gap-4" novalidate>
@@ -144,7 +144,7 @@ function syncPreview() {
   if (!target) return;
   const total = estimateTotalHours(draft);
   const left = total * (1 - (draft.progress || 0) / 100);
-  target.textContent = `StudySphere will budget about ${fmtHours(left)} of work for this`
+  target.textContent = `Gravity will budget about ${fmtHours(left)} of work for this`
     + `${draft.progress ? ` (${fmtHours(total)} in total)` : ''}`
     + `, based on the type, weightage and your confidence. Generating a study plan replaces the estimate with real task times.`;
 }

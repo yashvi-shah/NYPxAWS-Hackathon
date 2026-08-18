@@ -1,5 +1,5 @@
 /* ==========================================================================
-   dashboard.js — "What should I work on, and can I actually finish it?"
+   today.js — "What should I work on, and can I actually finish it?"
 
    Order on the page is the order of those questions: one next action with its
    reasoning, then today's capacity, then the week's verdict, then the pressure
@@ -79,7 +79,7 @@ export async function render_(view, ctx) {
   const verdict = weekVerdict(schedule);
   const today = todayPicture(schedule, plans);
   const urgent = open.filter((a) => daysUntil(a.deadline) <= 1).length;
-  setNavFlag('assignments', urgent);
+  setNavFlag('commitments', urgent);
 
   registerActions({ assignments, plans });
 
@@ -93,7 +93,7 @@ export async function render_(view, ctx) {
           mark: assignments.length ? 'checkCircle' : 'inbox',
           title: assignments.length ? 'You\'re all clear.' : 'Start with what\'s due.',
           message: assignments.length
-            ? 'No open commitments. Add the next one whenever it lands, and StudySphere will fit it around the time you have.'
+            ? 'No open commitments. Add the next one whenever it lands, and Gravity will fit it around the time you have.'
             : 'Add an assignment with its deadline and weighting, and you\'ll see straight away whether the week can take it.',
           action: { label: 'Add a commitment', act: 'addAssignment', icon: 'plus' },
         }),
@@ -200,7 +200,7 @@ function focusCard(focus, ordered, { assignments, plans, schedule, plan }) {
       body: emptyState({
         mark: 'checkCircle',
         title: 'Nothing is waiting on you.',
-        message: 'Your open work has no immediate pressure. Add what is coming next and StudySphere will slot it in.',
+        message: 'Your open work has no immediate pressure. Add what is coming next and Gravity will slot it in.',
         inline: true,
       }),
     });
@@ -494,7 +494,7 @@ function registerActions({ assignments }) {
     retryDashboard: () => reload(),
     gotoWorkload: () => navigate('workload'),
     gotoPlans: () => navigate('study-plans'),
-    gotoAssignments: () => navigate('assignments'),
+    gotoAssignments: () => navigate('commitments'),
     addAssignment: () => openAssignmentForm(),
     openAvailabilityFromPage: () => openAvailability(),
     openAssignment: (ds) => openAssignmentDetail(ds.id),

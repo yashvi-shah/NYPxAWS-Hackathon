@@ -60,7 +60,7 @@ export async function openAssignmentDetail(assignmentId) {
           : html`<span class="badge badge-strong ${TONE_BADGE[tone] || ''}">${priorityText(assignment)} priority</span>`}
         <span class="badge">${assignment.type || 'Coursework'}</span>
         ${assignment.priorityScore !== undefined
-          ? html`<span class="badge" data-tip="StudySphere's ranking score, from deadline, weightage, confidence and progress">Score ${assignment.priorityScore}/100</span>`
+          ? html`<span class="badge" data-tip="Gravity's ranking score, from deadline, weightage, confidence and progress">Score ${assignment.priorityScore}/100</span>`
           : raw('')}
       </div>
 
@@ -126,7 +126,7 @@ export async function openAssignmentDetail(assignmentId) {
         </div>
         ${plan ? planSummary(plan) : html`
           <div class="well col gap-3">
-            <p class="caption">No plan yet. StudySphere can break this into timed steps across the days you have left.</p>
+            <p class="caption">No plan yet. Gravity can break this into timed steps across the days you have left.</p>
             <button class="btn btn-sm" data-act="generatePlan" data-id="${assignment.id}">
               ${icon('plans', { size: 15 })}Build a study plan
             </button>

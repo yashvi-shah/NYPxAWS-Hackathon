@@ -8,26 +8,28 @@ import { registerRoutes, startRouter } from './core/router.js';
 import { session, refreshUser } from './services/store.js';
 import { initTheme, renderShell, renderAuthScreen, initShortcuts, syncUser } from './ui/shell.js';
 
-import dashboard from './pages/dashboard.js';
-import assignments from './pages/assignments.js';
+import today from './pages/today.js';
+import commitments from './pages/commitments.js';
 import workload from './pages/workload.js';
 import plans from './pages/plans.js';
 import calendar from './pages/calendar.js';
 import community from './pages/community.js';
-import leaderboard from './pages/leaderboard.js';
+import progress from './pages/progress.js';
+import chat from './pages/chat.js';
 
 const ROUTES = [
-  { id: 'dashboard',   title: 'Today',       render: dashboard.render },
-  { id: 'assignments', title: 'Commitments', render: assignments.render },
+  { id: 'today',       title: 'Today',       render: today.render },
+  { id: 'commitments', title: 'Commitments', render: commitments.render },
   { id: 'workload',    title: 'Workload',    render: workload.render },
   { id: 'study-plans', title: 'Study plans', render: plans.render },
   { id: 'calendar',    title: 'Calendar',    render: calendar.render },
   { id: 'community',   title: 'Community',   render: community.render },
-  { id: 'leaderboard', title: 'Progress',    render: leaderboard.render },
+  { id: 'progress',    title: 'Leaderboard', render: progress.render },
+  { id: 'chat',        title: 'Chat',        render: chat.render },
 ];
 
-/** Links kept working after the analytics page became the workload page. */
-const ALIASES = { analytics: 'workload' };
+/** Links kept working after old route IDs were renamed. */
+const ALIASES = { analytics: 'workload', dashboard: 'today', assignments: 'commitments', leaderboard: 'progress' };
 
 function normaliseHash() {
   const current = window.location.hash.replace(/^#\/?/, '').split(/[?/]/)[0];
@@ -38,7 +40,7 @@ function startApp(root) {
   renderShell(root);
   initShortcuts();
   normaliseHash();
-  startRouter('dashboard');
+  startRouter('today');
 
   // Keep the streak and XP chip honest without disturbing the page.
   window.setInterval(() => {

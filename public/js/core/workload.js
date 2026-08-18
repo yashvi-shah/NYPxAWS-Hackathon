@@ -1,5 +1,5 @@
 /* ==========================================================================
-   workload.js — StudySphere's workload model.
+   workload.js — Gravity's workload model.
 
    The backend owns priority scoring; this module answers the second question
    the product exists for: "can I realistically fit this into the time I have?"
