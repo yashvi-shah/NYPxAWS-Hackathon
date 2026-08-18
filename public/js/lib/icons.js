@@ -67,6 +67,7 @@ const PATHS = {
   image:      '<rect x="3.5" y="3.5" width="17" height="17" rx="2"/><circle cx="9" cy="9.5" r="1.5"/><path d="M20.5 14.5L16 10l-8.5 10.5"/>',
   file:       '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M10 13h4M10 17h4M10 9h1"/>',
   sparkle:    '<path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>',
+  gear:       '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1.08 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
 };
 
 /**
@@ -87,12 +88,10 @@ export function icon(name, opts = {}) {
   );
 }
 
-/** The Gravity mark: rising workload bars inside the app tile. */
+/** The Gravity mark: purple planet logo. */
 export function logoMark() {
   return raw(
-    '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" ' +
-    'stroke-width="2.1" stroke-linecap="round" aria-hidden="true">' +
-    '<path d="M5 18v-4M12 18V8M19 18v-7"/></svg>'
+    '<img src="/logo.svg" width="24" height="24" alt="" aria-hidden="true" style="border-radius:4px">'
   );
 }
 

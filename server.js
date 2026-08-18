@@ -245,7 +245,7 @@ async function handleAPI(req, res, pathname) {
     const user = users.find(u => u.email === body.email);
     if (user && user.password === body.password) {
       const { password, ...safeUser } = user;
-      return sendJSON(res, { success: true, user: safeUser });
+      return sendJSON(res, { success: true, user: { ...safeUser, levelInfo: calculateLevel(user.xp || 0) } });
     }
     return sendJSON(res, { success: false, error: 'Invalid credentials' }, 401);
   }
@@ -284,6 +284,33 @@ async function handleAPI(req, res, pathname) {
     const userId = pathname.split('/')[3];
     const user = db.users.getById(userId);
     if (!user) return sendJSON(res, { error: 'User not found' }, 404);
+    const { password, ...safe } = user;
+    return sendJSON(res, { ...safe, levelInfo: calculateLevel(user.xp || 0) });
+  }
+
+  if (pathname.startsWith('/api/users/') && method === 'PUT') {
+    const userId = pathname.split('/')[3];
+    const user = db.users.getById(userId);
+    if (!user) return sendJSON(res, { error: 'User not found' }, 404);
+    const updated = db.users.update(userId, body);
+    const { password, ...safe } = updated;
+    return sendJSON(res, { ...safe, levelInfo: calculateLevel(updated.xp || 0) });
+  }
+
+  // Reward redemption — deducts XP
+  if (pathname === '/api/rewards/redeem' && method === 'POST') {
+    const { userId, xpCost, rewardName } = body;
+    if (!userId || !xpCost) return sendJSON(res, { error: 'userId and xpCost required' }, 400);
+    const users = db.users.getAll();
+    const user = users.find(u => u.id === userId);
+    if (!user) return sendJSON(res, { error: 'User not found' }, 404);
+    if ((user.xp || 0) < xpCost) return sendJSON(res, { error: 'Not enough XP' }, 400);
+    
+    user.xp = (user.xp || 0) - xpCost;
+    user.xpHistory = user.xpHistory || [];
+    user.xpHistory.push({ amount: -xpCost, reason: `Redeemed: ${rewardName || 'reward'}`, date: new Date().toISOString() });
+    db.users.save(users);
+    
     const { password, ...safe } = user;
     return sendJSON(res, { ...safe, levelInfo: calculateLevel(user.xp || 0) });
   }

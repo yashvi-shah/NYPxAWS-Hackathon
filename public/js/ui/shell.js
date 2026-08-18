@@ -21,6 +21,8 @@ export const NAV = [
   { id: 'study-plans', label: 'Plans',       icon: 'plans',       title: 'Study plans', group: 'primary' },
   { id: 'calendar',    label: 'Calendar',    icon: 'calendar',    title: 'Calendar', group: 'primary' },
   { id: 'chat',        label: 'Chat',        icon: 'chat',        title: 'Chat', group: 'primary' },
+  { id: 'my-gravity',  label: 'My Gravity',  icon: 'target',      title: 'My Gravity', group: 'primary' },
+  { id: 'rewards',     label: 'Rewards',     icon: 'flame',       title: 'My Rewards', group: 'primary' },
   { id: 'community',   label: 'Community',   icon: 'community',   title: 'Community', group: 'secondary' },
   { id: 'progress',    label: 'Leaderboard', icon: 'leaderboard', title: 'Leaderboard', group: 'secondary' },
 ];
@@ -79,7 +81,7 @@ export function renderAuthScreen(root, { onSignedIn }) {
           <li><span class="n">2</span><span><b>See the pressure</b> before it arrives — which days are overloaded and by how much.</span></li>
           <li><span class="n">3</span><span><b>Work in order.</b> One clear next action, with the reasoning shown.</span></li>
         </ul>
-        <p class="caption">Built for polytechnic students juggling six modules and one calendar.</p>
+        <p class="caption">Made for students, by students.</p>
       </section>
 
       <div class="auth-form-wrap">
@@ -191,6 +193,8 @@ export function renderShell(root) {
               <a class="icon-btn only-narrow" href="#/${n.id}" data-act="goto" data-page="${n.id}"
                  data-nav="${n.id}" aria-label="${n.title}">${icon(n.icon, { size: 16 })}</a>
             `)}
+            <a class="icon-btn" href="#/settings" data-act="goto" data-page="settings" aria-label="Settings"
+                    data-tip="Settings">${icon('gear', { size: 16 })}</a>
             <button class="icon-btn" id="theme-toggle" data-act="toggleTheme" aria-label="Switch theme"></button>
             <button class="icon-btn hide-narrow" data-act="openAvailability" aria-label="Adjust your available study time"
                     data-tip="Available study time">${icon('sliders', { size: 16 })}</button>
@@ -233,6 +237,9 @@ export function renderShell(root) {
   onRouteChange(syncNav);
   syncNav();
   preferences.subscribe(() => syncNav());
+
+  // Ensure theme toggle button gets its icon now that the shell is rendered
+  applyTheme(document.documentElement.dataset.theme || 'light');
 }
 
 function navItem(item) {

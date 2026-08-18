@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7b4b9e"/>
+      <stop offset="100%" stop-color="#4a2070"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c0b8cc" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#a098b0" stop-opacity="0.7"/>
+    </linearGradient>
+  </defs>
+  <!-- Planet sphere -->
+  <circle cx="64" cy="64" r="52" fill="url(#bg)"/>
+  <!-- Orbit rings -->
+  <ellipse cx="64" cy="64" rx="58" ry="28" fill="none" stroke="url(#ring)" stroke-width="5" transform="rotate(-30 64 64)"/>
+  <ellipse cx="64" cy="64" rx="58" ry="28" fill="none" stroke="url(#ring)" stroke-width="5" transform="rotate(30 64 64)"/>
+  <ellipse cx="64" cy="64" rx="58" ry="28" fill="none" stroke="url(#ring)" stroke-width="5" transform="rotate(90 64 64)"/>
+  <!-- G letter -->
+  <rect x="44" y="44" width="40" height="40" rx="8" fill="none" stroke="#fff" stroke-width="3.5" opacity="0.9"/>
+  <text x="64" y="74" font-family="system-ui, sans-serif" font-size="32" font-weight="800" fill="#fff" text-anchor="middle" opacity="0.95">G</text>
+</svg>

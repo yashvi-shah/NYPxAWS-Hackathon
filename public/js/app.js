@@ -16,6 +16,9 @@ import calendar from './pages/calendar.js';
 import community from './pages/community.js';
 import progress from './pages/progress.js';
 import chat from './pages/chat.js';
+import settings from './pages/settings.js';
+import universe from './pages/universe.js';
+import rewards from './pages/rewards.js';
 
 const ROUTES = [
   { id: 'today',       title: 'Today',       render: today.render },
@@ -26,6 +29,9 @@ const ROUTES = [
   { id: 'community',   title: 'Community',   render: community.render },
   { id: 'progress',    title: 'Leaderboard', render: progress.render },
   { id: 'chat',        title: 'Chat',        render: chat.render },
+  { id: 'my-gravity',  title: 'My Gravity',  render: universe.render },
+  { id: 'rewards',     title: 'My Rewards',  render: rewards.render },
+  { id: 'settings',    title: 'Settings',    render: settings.render },
 ];
 
 /** Links kept working after old route IDs were renamed. */
@@ -37,6 +43,9 @@ function normaliseHash() {
 }
 
 function startApp(root) {
+  // Apply any locally tracked XP deductions from rewards
+  applyRewardDeductions();
+
   renderShell(root);
   initShortcuts();
   normaliseHash();
@@ -45,8 +54,20 @@ function startApp(root) {
   // Keep the streak and XP chip honest without disturbing the page.
   window.setInterval(() => {
     if (!session.isSignedIn() || document.hidden) return;
-    refreshUser().then(syncUser);
+    refreshUser().then(() => { applyRewardDeductions(); syncUser(); });
   }, 60000);
+}
+
+/** Deduct locally-tracked reward spending from session XP */
+function applyRewardDeductions() {
+  const spent = Number(localStorage.getItem('gravity.xpSpent.v1')) || 0;
+  if (spent > 0 && session.user) {
+    const serverXp = session.user.xp || 0;
+    const adjusted = Math.max(0, serverXp - spent);
+    if (session.user.xp !== adjusted) {
+      session.merge({ xp: adjusted });
+    }
+  }
 }
 
 function boot() {

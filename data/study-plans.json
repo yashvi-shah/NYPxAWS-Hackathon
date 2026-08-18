@@ -11,7 +11,7 @@
         "title": "Define scope & objectives",
         "scheduledDate": "2026-08-17",
         "duration": 30,
-        "completed": false,
+        "completed": true,
         "order": 1
       },
       {
@@ -35,7 +35,7 @@
         "title": "Core implementation",
         "scheduledDate": "2026-08-18",
         "duration": 120,
-        "completed": false,
+        "completed": true,
         "order": 4
       },
       {
@@ -43,7 +43,7 @@
         "title": "Testing & iteration",
         "scheduledDate": "2026-08-18",
         "duration": 60,
-        "completed": false,
+        "completed": true,
         "order": 5
       },
       {
@@ -51,7 +51,7 @@
         "title": "Final submission prep",
         "scheduledDate": "2026-08-19",
         "duration": 45,
-        "completed": false,
+        "completed": true,
         "order": 6
       }
     ],

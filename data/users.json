@@ -6,9 +6,9 @@
     "password": "demo123",
     "course": "Electrical Engineering",
     "year": 2,
-    "xp": 1375,
-    "streak": 7,
-    "lastActiveDate": "2026-08-17",
+    "xp": 1415,
+    "streak": 8,
+    "lastActiveDate": "2026-08-18",
     "avatar": "🎓",
     "badges": [
       "first-assignment",
@@ -81,6 +81,26 @@
         "amount": 10,
         "reason": "Completed task: Initial development",
         "date": "2026-08-17T13:27:38.706Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Completed task: Final submission prep",
+        "date": "2026-08-18T12:29:54.198Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Completed task: Testing & iteration",
+        "date": "2026-08-18T12:29:56.188Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Completed task: Core implementation",
+        "date": "2026-08-18T12:29:57.376Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Completed task: Define scope & objectives",
+        "date": "2026-08-18T12:29:58.887Z"
       }
     ],
     "createdAt": "2026-07-18T11:47:53.114Z"

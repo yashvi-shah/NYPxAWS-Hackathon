@@ -7,7 +7,9 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
   color-scheme: light;
+  scroll-behavior: smooth;
 }
 [data-theme="dark"] { color-scheme: dark; }
 
@@ -18,8 +20,11 @@ body {
   color: var(--ink);
   background: var(--paper);
   min-height: 100vh;
+  min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
 }
 
 /* ---- Headings: display face, tight tracking, restrained sizes ----------- */

@@ -4,49 +4,48 @@
    ========================================================================== */
 
 :root {
-  /* ---- Neutrals: warm paper, ink text. Warmth keeps it out of "SaaS grey". */
-  --paper:        #faf9f7;  /* app canvas                       */
+  /* ---- Neutrals: soft bisque/peach palette (light mode). */
+  --paper:        #fdf6f0;  /* app canvas — light bisque wash   */
   --surface:      #ffffff;  /* cards, panels                    */
-  --surface-2:    #f4f2ee;  /* insets, table stripes, wells     */
-  --surface-3:    #ebe8e2;  /* meter tracks, hover on insets    */
-  --surface-hover:#f6f4f1;
-  --line:         #e4e0d9;  /* default hairline                 */
-  --line-strong:  #d3cec4;  /* emphasised divider, input border */
+  --surface-2:    #f8ede3;  /* insets, table stripes, wells     */
+  --surface-3:    #f0e0d2;  /* meter tracks, hover on insets    */
+  --surface-hover:#faf2ec;
+  --line:         #F5D9C7;  /* default hairline — Bisque        */
+  --line-strong:  #e8c4ab;  /* emphasised divider               */
 
-  --ink:          #16191d;  /* primary text                     */
-  --ink-2:        #4c545e;  /* secondary text                   */
-  --ink-3:        #686e76;  /* metadata, captions — AA on every surface */
-  --ink-inverse:  #fbfaf8;
+  --ink:          #3a2d4f;  /* primary text — deep purple       */
+  --ink-2:        #5a4a6a;  /* secondary text                   */
+  --ink-3:        #7E71A5;  /* metadata, captions — Light Slate Gray */
+  --ink-inverse:  #fdf6f0;
 
-  /* ---- Identity: "harbour" — deep desaturated blue-teal.
-         Reads institutional and calm; deliberately not indigo/violet. */
-  --accent:       #145a6e;
-  --accent-hover: #0f4757;
-  --accent-quiet: #3d8ba1;  /* links, small interactive text     */
-  --accent-tint:  #e6eff2;  /* selected rows, tinted surfaces    */
-  --accent-tint-2:#d3e4e9;
-  --accent-ring:  rgba(20, 90, 110, 0.28);
+  /* ---- Identity: dark slate blue accent. */
+  --accent:       #355C7D;  /* Dark Slate Blue — primary action */
+  --accent-hover: #2a4a65;
+  --accent-quiet: #6DBAE4;  /* Sky Blue — links, interactive    */
+  --accent-tint:  #e6eef4;  /* selected rows, tinted surfaces   */
+  --accent-tint-2:#d1e0ec;
+  --accent-ring:  rgba(53, 92, 125, 0.24);
 
   /* ---- Semantics. Colour is reserved for meaning, never decoration. */
   --ok:           #1a7548;
-  --ok-tint:      #e7f2eb;
+  --ok-tint:      #e7f5eb;
   --ok-quiet:     #2f8a5c;
 
   --warn:         #8f5304;  /* attention / tight                 */
   --warn-tint:    #fbf0dd;
   --warn-quiet:   #b3711a;
 
-  --risk:         #a92d22;  /* urgent / over capacity            */
-  --risk-tint:    #fbe9e6;
-  --risk-quiet:   #c2483c;
+  --risk:         #F1396D;  /* Indian Red — urgent / over capacity */
+  --risk-tint:    #fde8ef;
+  --risk-quiet:   #d4305e;
 
-  --info:         #2c5f8a;
-  --info-tint:    #e8eff5;
+  --info:         #6DBAE4;
+  --info-tint:    #e3f5fc;
 
   /* Load scale — used by capacity meters, calendar cells, heat columns */
   --load-0: var(--surface-3);
-  --load-1: #cfe0e4;
-  --load-2: #9dc3cb;
+  --load-1: #ccedf9;
+  --load-2: #6DBAE4;
   --load-3: var(--warn-quiet);
   --load-4: var(--risk);
 
@@ -58,16 +57,16 @@
   --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", "Consolas",
                "Roboto Mono", monospace;
 
-  --fs-display: 1.6875rem; /* 27px — page titles            */
-  --fs-title:   1.3125rem; /* 21px — hero / drawer titles   */
-  --fs-lg:      1.0625rem; /* 17px — card titles            */
-  --fs-body:    0.9375rem; /* 15px — body                   */
-  --fs-sm:      0.8125rem; /* 13px — dense meta             */
-  --fs-xs:      0.75rem;   /* 12px — captions               */
-  --fs-eyebrow: 0.6875rem; /* 11px — uppercase labels       */
+  --fs-display: 1.875rem;  /* 30px — page titles            */
+  --fs-title:   1.5rem;    /* 24px — hero / drawer titles   */
+  --fs-lg:      1.1875rem; /* 19px — card titles            */
+  --fs-body:    1rem;       /* 16px — body                   */
+  --fs-sm:      0.875rem;  /* 14px — dense meta             */
+  --fs-xs:      0.8125rem; /* 13px — captions               */
+  --fs-eyebrow: 0.75rem;   /* 12px — uppercase labels       */
 
-  --fs-stat:    1.5rem;
-  --fs-stat-lg: 2.125rem;
+  --fs-stat:    1.75rem;
+  --fs-stat-lg: 2.375rem;
 
   --lh-tight: 1.2;
   --lh-snug:  1.35;
@@ -105,47 +104,47 @@
 }
 
 /* ==========================================================================
-   Dark theme — same semantics, re-grounded on warm charcoal, not blue-black.
+   Dark theme — deep navy/indigo palette with steel blue and firebrick accents.
    ========================================================================== */
 [data-theme="dark"] {
-  --paper:        #14171a;
-  --surface:      #1b1f23;
-  --surface-2:    #22272b;
-  --surface-3:    #2d3338;
-  --surface-hover:#23282d;
-  --line:         #2c3236;
-  --line-strong:  #3b4247;
+  --paper:        #0B0F2B;  /* Black / deep navy canvas          */
+  --surface:      #141836;
+  --surface-2:    #1c2044;
+  --surface-3:    #2a2e52;
+  --surface-hover:#1e2248;
+  --line:         #2e3358;
+  --line-strong:  #3d426a;
 
-  --ink:          #f0ede8;
-  --ink-2:        #b3bac1;
-  --ink-3:        #8b939b;
-  --ink-inverse:  #14171a;
+  --ink:          #D3D3C8;  /* Light Gray                        */
+  --ink-2:        #b0b0a6;
+  --ink-3:        #8e8e85;
+  --ink-inverse:  #0B0F2B;
 
-  --accent:       #4ea3bd;
-  --accent-hover: #6ab8d0;
-  --accent-quiet: #7cc0d4;
-  --accent-tint:  #1d2a30;
-  --accent-tint-2:#264049;
-  --accent-ring:  rgba(110, 190, 214, .40);
+  --accent:       #29629F;  /* Steel Blue                        */
+  --accent-hover: #3578b8;
+  --accent-quiet: #5a9fd4;  /* lighter blue for links            */
+  --accent-tint:  #131d36;
+  --accent-tint-2:#1a2a4a;
+  --accent-ring:  rgba(41, 98, 159, .40);
 
   --ok:           #4cb37b;
-  --ok-tint:      #16261d;
+  --ok-tint:      #0f1e2b;
   --ok-quiet:     #66c290;
 
   --warn:         #dfa43f;
-  --warn-tint:    #2b2314;
+  --warn-tint:    #1e1810;
   --warn-quiet:   #c99236;
 
-  --risk:         #e4776a;
-  --risk-tint:    #2c1a18;
-  --risk-quiet:   #d0685c;
+  --risk:         #C2412D;  /* Firebrick                         */
+  --risk-tint:    #2c1410;
+  --risk-quiet:   #d4594a;
 
-  --info:         #6da5cf;
-  --info-tint:    #1a2530;
+  --info:         #591685;  /* Indigo                            */
+  --info-tint:    #1a0f2b;
 
   --load-0: var(--surface-3);
-  --load-1: #2f4a53;
-  --load-2: #3f7385;
+  --load-1: #1e3a5e;
+  --load-2: #29629F;
   --load-3: var(--warn-quiet);
   --load-4: var(--risk);
 

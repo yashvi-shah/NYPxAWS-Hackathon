@@ -70,6 +70,10 @@ export const api = {
   /* ---- users ---- */
   users: () => request('/api/users'),
   user: (id) => request(`/api/users/${encodeURIComponent(id)}`),
+  updateUser: (id, payload) =>
+    request(`/api/users/${encodeURIComponent(id)}`, { method: 'PUT', body: payload }),
+  redeemReward: (userId, xpCost, rewardName) =>
+    request('/api/rewards/redeem', { method: 'POST', body: { userId, xpCost, rewardName } }),
 
   /* ---- assignments ---- */
   assignments: (opts) => request('/api/assignments', opts),
