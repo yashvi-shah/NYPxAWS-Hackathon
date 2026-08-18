@@ -9,7 +9,7 @@
       {
         "id": "task-0",
         "title": "Define scope & objectives",
-        "scheduledDate": "2026-08-17",
+        "scheduledDate": "2026-08-18",
         "duration": 30,
         "completed": true,
         "order": 1
@@ -17,7 +17,7 @@
       {
         "id": "task-1",
         "title": "Research & planning",
-        "scheduledDate": "2026-08-17",
+        "scheduledDate": "2026-08-18",
         "duration": 60,
         "completed": true,
         "order": 2
@@ -25,38 +25,38 @@
       {
         "id": "task-2",
         "title": "Initial development",
-        "scheduledDate": "2026-08-17",
+        "scheduledDate": "2026-08-18",
         "duration": 90,
-        "completed": true,
+        "completed": false,
         "order": 3
       },
       {
         "id": "task-3",
         "title": "Core implementation",
-        "scheduledDate": "2026-08-18",
+        "scheduledDate": "2026-08-19",
         "duration": 120,
-        "completed": true,
+        "completed": false,
         "order": 4
       },
       {
         "id": "task-4",
         "title": "Testing & iteration",
-        "scheduledDate": "2026-08-18",
+        "scheduledDate": "2026-08-19",
         "duration": 60,
-        "completed": true,
+        "completed": false,
         "order": 5
       },
       {
         "id": "task-5",
         "title": "Final submission prep",
-        "scheduledDate": "2026-08-19",
+        "scheduledDate": "2026-08-20",
         "duration": 45,
-        "completed": true,
+        "completed": false,
         "order": 6
       }
     ],
     "estimatedHours": 6.75,
     "userId": "user1",
-    "createdAt": "2026-08-16T11:47:53.114Z"
+    "createdAt": "2026-08-17T15:48:30.295Z"
   }
 ]

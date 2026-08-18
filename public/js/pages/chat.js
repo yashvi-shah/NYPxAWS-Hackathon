@@ -66,6 +66,38 @@ const MOCK_RESPONSES = [
   'I\u2019d be happy to help you prepare. The key is to focus on understanding concepts rather than memorising facts \u2014 that way you can handle any question they throw at you.',
 ];
 
+const MOCK_FLASHCARDS = {
+  trigger: ['flashcard', 'flash card', 'quiz me', 'test me'],
+  response: {
+    type: 'flashcards',
+    title: 'Python Data Structures',
+    cards: [
+      { front: 'What is the time complexity of accessing a Python dict by key?', back: 'O(1) — average case constant time via hash table lookup.' },
+      { front: 'What is the difference between a list and a tuple?', back: 'Lists are mutable (can be changed). Tuples are immutable (fixed after creation) and hashable.' },
+      { front: 'When would you use a set over a list?', back: 'When you need fast O(1) membership testing and don\'t need ordering or duplicates.' },
+      { front: 'What does list.append() vs list.extend() do?', back: 'append() adds one element to the end. extend() adds all elements from an iterable.' },
+    ],
+  },
+};
+
+const MOCK_STUDY_PLAN = {
+  trigger: ['plan', 'study plan', 'schedule', 'break down', 'break it down'],
+  response: {
+    type: 'study-plan',
+    title: 'Database Report Study Plan',
+    totalHours: 8,
+    tasks: [
+      { day: 'Today', title: 'Review normalisation rules (1NF, 2NF, 3NF)', duration: '1.5 hrs' },
+      { day: 'Today', title: 'Draw ER diagram for given scenario', duration: '1 hr' },
+      { day: 'Tomorrow', title: 'Write SQL CREATE TABLE statements', duration: '1.5 hrs' },
+      { day: 'Tomorrow', title: 'Implement sample queries (JOIN, GROUP BY)', duration: '1 hr' },
+      { day: 'Wed', title: 'Write report introduction and methodology', duration: '1.5 hrs' },
+      { day: 'Thu', title: 'Complete results section with screenshots', duration: '1 hr' },
+      { day: 'Fri', title: 'Proofread and format final submission', duration: '0.5 hr' },
+    ],
+  },
+};
+
 const SUGGESTED_PROMPTS = [
   { text: 'Help me plan my week', icon: 'calendar' },
   { text: 'What should I study first?', icon: 'target' },
@@ -193,6 +225,64 @@ function aiMessage(msg) {
       </div>
       <div class="chat-msg-bubble chat-msg-bubble-ai">
         <div class="chat-msg-content">${formatMessageText(msg.text)}</div>
+        ${msg.richContent ? renderRichContent(msg.richContent) : raw('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderRichContent(content) {
+  if (content.type === 'flashcards') return renderFlashcards(content);
+  if (content.type === 'study-plan') return renderStudyPlan(content);
+  return raw('');
+}
+
+function renderFlashcards(content) {
+  return html`
+    <div class="chat-flashcards">
+      <div class="chat-fc-header">
+        <span class="chat-fc-title">${icon('layers', { size: 14 })} ${content.title}</span>
+        <span class="chat-fc-count">${content.cards.length} cards</span>
+      </div>
+      <div class="chat-fc-grid">
+        ${content.cards.map((card, i) => html`
+          <div class="chat-fc-card" data-flipped="false" onclick="this.dataset.flipped = this.dataset.flipped === 'true' ? 'false' : 'true'">
+            <div class="chat-fc-front">
+              <span class="chat-fc-num">${i + 1}</span>
+              <p>${card.front}</p>
+              <span class="chat-fc-hint">Click to reveal</span>
+            </div>
+            <div class="chat-fc-back">
+              <p>${card.back}</p>
+              <span class="chat-fc-hint">Click to hide</span>
+            </div>
+          </div>
+        `)}
+      </div>
+    </div>
+  `;
+}
+
+function renderStudyPlan(content) {
+  return html`
+    <div class="chat-plan">
+      <div class="chat-plan-header">
+        <span class="chat-plan-title">${icon('plans', { size: 14 })} ${content.title}</span>
+        <span class="chat-plan-hours">${content.totalHours} hrs total</span>
+      </div>
+      <div class="chat-plan-tasks">
+        ${content.tasks.map((task) => html`
+          <div class="chat-plan-task">
+            <span class="chat-plan-task-day">${task.day}</span>
+            <span class="chat-plan-task-title">${task.title}</span>
+            <span class="chat-plan-task-dur">${task.duration}</span>
+          </div>
+        `)}
+      </div>
+      <div class="chat-plan-footer">
+        <button class="btn btn-sm btn-primary" data-act="savePlanFromChat">
+          ${icon('check', { size: 14 })}Save to my plans
+        </button>
       </div>
     </div>
   `;
@@ -309,6 +399,7 @@ function registerActions(view) {
       rerender(view);
     },
     sendMessage: () => sendMessage(view),
+    savePlanFromChat: () => { /* Future: save AI-generated plan to Plans page */ },
     chatInputKey: () => { /* handled by event listener */ },
   });
 }
@@ -395,9 +486,16 @@ async function sendMessage(view) {
   // Mock AI response after delay
   await new Promise((resolve) => setTimeout(resolve, 1200 + Math.random() * 800));
 
-  // Pick a mock response
-  const response = MOCK_RESPONSES[Math.floor(Math.random() * MOCK_RESPONSES.length)];
-  conv.messages.push({ role: 'ai', text: response });
+  // Check for special content triggers
+  const lower = text.toLowerCase();
+  if (MOCK_FLASHCARDS.trigger.some((t) => lower.includes(t))) {
+    conv.messages.push({ role: 'ai', text: 'Here are some flashcards for you to study with:', richContent: MOCK_FLASHCARDS.response });
+  } else if (MOCK_STUDY_PLAN.trigger.some((t) => lower.includes(t))) {
+    conv.messages.push({ role: 'ai', text: 'I\'ve put together a study plan based on your deadline:', richContent: MOCK_STUDY_PLAN.response });
+  } else {
+    const response = MOCK_RESPONSES[Math.floor(Math.random() * MOCK_RESPONSES.length)];
+    conv.messages.push({ role: 'ai', text: response });
+  }
 
   // Remove typing indicator and rerender
   rerender(view);

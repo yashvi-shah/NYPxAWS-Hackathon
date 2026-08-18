@@ -4,112 +4,111 @@
     "title": "IoT Smart Home Prototype",
     "module": "EE4301 - IoT Systems",
     "type": "Project",
-    "deadline": "2026-08-19",
+    "deadline": "2026-08-20",
     "weightage": 40,
     "confidence": 35,
     "progress": 45,
     "status": "pending",
     "description": "Design and build a smart home IoT prototype using Arduino and sensors. Must include temperature monitoring, light control, and mobile app integration.",
     "userId": "user1",
-    "createdAt": "2026-08-03T11:47:53.114Z"
+    "createdAt": "2026-08-04T15:48:30.295Z"
   },
   {
     "id": "asgn2",
     "title": "Digital Signal Processing Lab Report",
     "module": "EE3205 - DSP",
     "type": "Lab Report",
-    "deadline": "2026-08-22",
+    "deadline": "2026-08-23",
     "weightage": 15,
     "confidence": 60,
     "progress": 20,
     "status": "pending",
     "description": "Write lab report on FFT analysis and signal filtering experiments conducted in Week 8.",
     "userId": "user1",
-    "createdAt": "2026-08-10T11:47:53.114Z"
+    "createdAt": "2026-08-11T15:48:30.295Z"
   },
   {
     "id": "asgn3",
     "title": "Machine Learning Classification Model",
     "module": "IT3402 - AI & ML",
     "type": "Programming",
-    "deadline": "2026-08-25",
+    "deadline": "2026-08-26",
     "weightage": 30,
     "confidence": 45,
     "progress": 10,
     "status": "pending",
     "description": "Build a classification model using Python scikit-learn. Dataset provided. Must achieve >85% accuracy.",
     "userId": "user1",
-    "createdAt": "2026-08-12T11:47:53.114Z"
+    "createdAt": "2026-08-13T15:48:30.295Z"
   },
   {
     "id": "asgn4",
     "title": "Technical Writing Essay",
     "module": "GE2101 - Communication",
     "type": "Essay",
-    "deadline": "2026-08-29",
+    "deadline": "2026-08-30",
     "weightage": 20,
     "confidence": 75,
     "progress": 0,
     "status": "pending",
     "description": "2000-word essay on the impact of AI in engineering. APA format required.",
     "userId": "user1",
-    "createdAt": "2026-08-14T11:47:53.114Z"
+    "createdAt": "2026-08-15T15:48:30.295Z"
   },
   {
     "id": "asgn5",
     "title": "Group Presentation: Renewable Energy",
     "module": "EE3101 - Power Systems",
     "type": "Presentation",
-    "deadline": "2026-09-04",
+    "deadline": "2026-09-05",
     "weightage": 25,
     "confidence": 55,
-    "progress": 100,
-    "status": "completed",
+    "progress": 30,
+    "status": "pending",
     "description": "15-minute group presentation on renewable energy integration. Slides + demo required.",
     "userId": "user1",
-    "createdAt": "2026-08-07T11:47:53.114Z",
-    "updatedAt": "2026-08-17T11:51:18.939Z"
+    "createdAt": "2026-08-08T15:48:30.295Z"
   },
   {
     "id": "asgn6",
     "title": "Database Normalization Exercise",
     "module": "IT2205 - Databases",
     "type": "Programming",
-    "deadline": "2026-08-18",
+    "deadline": "2026-08-19",
     "weightage": 10,
     "confidence": 80,
     "progress": 90,
     "status": "pending",
     "description": "Normalize given schema to 3NF. Submit SQL scripts and ER diagram.",
     "userId": "user1",
-    "createdAt": "2026-08-12T11:47:53.114Z"
+    "createdAt": "2026-08-13T15:48:30.295Z"
   },
   {
     "id": "asgn7",
     "title": "Web Application Project",
     "module": "IT3305 - Web Dev",
     "type": "Project",
-    "deadline": "2026-09-11",
+    "deadline": "2026-09-12",
     "weightage": 45,
     "confidence": 50,
     "progress": 15,
     "status": "pending",
     "description": "Full-stack web application with React frontend and Node.js backend. Must include authentication and CRUD operations.",
     "userId": "user2",
-    "createdAt": "2026-07-28T11:47:53.114Z"
+    "createdAt": "2026-07-29T15:48:30.295Z"
   },
   {
     "id": "asgn8",
     "title": "CAD Assembly Drawing",
     "module": "ME2401 - CAD/CAM",
     "type": "Project",
-    "deadline": "2026-08-21",
+    "deadline": "2026-08-22",
     "weightage": 20,
     "confidence": 40,
     "progress": 55,
     "status": "pending",
     "description": "Complete assembly drawing of gearbox mechanism in SolidWorks. Submit .SLDASM and .PDF files.",
     "userId": "user3",
-    "createdAt": "2026-08-07T11:47:53.114Z"
+    "createdAt": "2026-08-08T15:48:30.295Z"
   }
 ]

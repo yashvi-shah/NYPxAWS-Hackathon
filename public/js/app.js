@@ -51,6 +51,9 @@ function startApp(root) {
   normaliseHash();
   startRouter('today');
 
+  // Init notifications bell
+  import('./features/notifications.js').then((m) => m.initNotifications());
+
   // Keep the streak and XP chip honest without disturbing the page.
   window.setInterval(() => {
     if (!session.isSignedIn() || document.hidden) return;

@@ -186,7 +186,7 @@ export function renderShell(root) {
           <a class="wordmark topbar-brand" href="#/today" data-act="goto" data-page="today" style="display:none">
             <span class="mark">${logoMark()}</span>
           </a>
-          <span class="topbar-date">${weekdayLong(now)}, ${now.getDate()} ${monthLong(now.getMonth())}</span>
+          <span class="topbar-date" id="topbar-clock">${weekdayLong(now)}, ${now.getDate()} ${monthLong(now.getMonth())} &middot; ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}</span>
           <div class="topbar-tools">
             <span class="streak-chip hide-narrow" id="streak-chip" data-tip="Days in a row you have kept moving"></span>
             ${NAV.filter((n) => n.group === 'secondary').map((n) => html`
@@ -196,6 +196,12 @@ export function renderShell(root) {
             <a class="icon-btn" href="#/settings" data-act="goto" data-page="settings" aria-label="Settings"
                     data-tip="Settings">${icon('gear', { size: 16 })}</a>
             <button class="icon-btn" id="theme-toggle" data-act="toggleTheme" aria-label="Switch theme"></button>
+            <div class="notif-wrap">
+              <button class="icon-btn" id="notif-btn" aria-label="Notifications" data-tip="Notifications">
+                ${icon('alert', { size: 16 })}
+              </button>
+              <div class="notif-dropdown" id="notif-dropdown"></div>
+            </div>
             <button class="icon-btn hide-narrow" data-act="openAvailability" aria-label="Adjust your available study time"
                     data-tip="Available study time">${icon('sliders', { size: 16 })}</button>
             <button class="btn btn-primary btn-sm" data-act="addAssignment" aria-label="Add a commitment">
@@ -220,6 +226,15 @@ export function renderShell(root) {
   };
   applyBrand();
   window.addEventListener('resize', applyBrand);
+
+  // Keep the topbar clock ticking.
+  const tickClock = () => {
+    const el = document.getElementById('topbar-clock');
+    if (!el) return;
+    const n = new Date();
+    el.textContent = `${weekdayLong(n)}, ${n.getDate()} ${monthLong(n.getMonth())} \u00b7 ${String(n.getHours()).padStart(2, '0')}:${String(n.getMinutes()).padStart(2, '0')}`;
+  };
+  window.setInterval(tickClock, 30000);
 
   setLayer('global', {
     goto: (ds) => navigate(ds.page),
