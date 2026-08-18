@@ -1,0 +1,155 @@
+/* ==========================================================================
+   Gravity — Design tokens
+   One source of truth for colour, type, space, radius, elevation, motion.
+   ========================================================================== */
+
+:root {
+  /* ---- Neutrals: warm paper, ink text. Warmth keeps it out of "SaaS grey". */
+  --paper:        #faf9f7;  /* app canvas                       */
+  --surface:      #ffffff;  /* cards, panels                    */
+  --surface-2:    #f4f2ee;  /* insets, table stripes, wells     */
+  --surface-3:    #ebe8e2;  /* meter tracks, hover on insets    */
+  --surface-hover:#f6f4f1;
+  --line:         #e4e0d9;  /* default hairline                 */
+  --line-strong:  #d3cec4;  /* emphasised divider, input border */
+
+  --ink:          #16191d;  /* primary text                     */
+  --ink-2:        #4c545e;  /* secondary text                   */
+  --ink-3:        #686e76;  /* metadata, captions — AA on every surface */
+  --ink-inverse:  #fbfaf8;
+
+  /* ---- Identity: "harbour" — deep desaturated blue-teal.
+         Reads institutional and calm; deliberately not indigo/violet. */
+  --accent:       #145a6e;
+  --accent-hover: #0f4757;
+  --accent-quiet: #3d8ba1;  /* links, small interactive text     */
+  --accent-tint:  #e6eff2;  /* selected rows, tinted surfaces    */
+  --accent-tint-2:#d3e4e9;
+  --accent-ring:  rgba(20, 90, 110, 0.28);
+
+  /* ---- Semantics. Colour is reserved for meaning, never decoration. */
+  --ok:           #1a7548;
+  --ok-tint:      #e7f2eb;
+  --ok-quiet:     #2f8a5c;
+
+  --warn:         #8f5304;  /* attention / tight                 */
+  --warn-tint:    #fbf0dd;
+  --warn-quiet:   #b3711a;
+
+  --risk:         #a92d22;  /* urgent / over capacity            */
+  --risk-tint:    #fbe9e6;
+  --risk-quiet:   #c2483c;
+
+  --info:         #2c5f8a;
+  --info-tint:    #e8eff5;
+
+  /* Load scale — used by capacity meters, calendar cells, heat columns */
+  --load-0: var(--surface-3);
+  --load-1: #cfe0e4;
+  --load-2: #9dc3cb;
+  --load-3: var(--warn-quiet);
+  --load-4: var(--risk);
+
+  /* ---- Type -------------------------------------------------------------- */
+  --font-sans: "Segoe UI Variable Text", "Segoe UI", ui-sans-serif, system-ui,
+               -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Segoe UI Variable Display", "Segoe UI", ui-sans-serif,
+               system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", "Consolas",
+               "Roboto Mono", monospace;
+
+  --fs-display: 1.6875rem; /* 27px — page titles            */
+  --fs-title:   1.3125rem; /* 21px — hero / drawer titles   */
+  --fs-lg:      1.0625rem; /* 17px — card titles            */
+  --fs-body:    0.9375rem; /* 15px — body                   */
+  --fs-sm:      0.8125rem; /* 13px — dense meta             */
+  --fs-xs:      0.75rem;   /* 12px — captions               */
+  --fs-eyebrow: 0.6875rem; /* 11px — uppercase labels       */
+
+  --fs-stat:    1.5rem;
+  --fs-stat-lg: 2.125rem;
+
+  --lh-tight: 1.2;
+  --lh-snug:  1.35;
+  --lh-body:  1.55;
+
+  --tracking-eyebrow: 0.07em;
+  --tracking-tight: -0.011em;
+
+  /* ---- Space (4px base) -------------------------------------------------- */
+  --sp-1: 4px;   --sp-2: 8px;   --sp-3: 12px;  --sp-4: 16px;
+  --sp-5: 20px;  --sp-6: 24px;  --sp-7: 32px;  --sp-8: 40px;  --sp-9: 56px;
+
+  /* ---- Radius: small and consistent. No pill-shaped everything. --------- */
+  --r-xs: 3px; --r-sm: 5px; --r-md: 7px; --r-lg: 10px; --r-full: 999px;
+
+  /* ---- Elevation: borders do the work; shadow only lifts overlays. ------ */
+  --sh-1: 0 1px 1px rgba(22, 25, 29, .035), 0 1px 3px -1px rgba(22, 25, 29, .04);
+  --sh-2: 0 1px 2px rgba(22, 25, 29, .05), 0 6px 16px -6px rgba(22, 25, 29, .10);
+  --sh-3: 0 2px 6px rgba(22, 25, 29, .07), 0 24px 48px -16px rgba(22, 25, 29, .22);
+
+  /* ---- Motion ------------------------------------------------------------ */
+  --dur-1: 110ms;
+  --dur-2: 180ms;
+  --dur-3: 260ms;
+  --ease: cubic-bezier(.2, .6, .35, 1);
+
+  /* ---- Layout ------------------------------------------------------------ */
+  --sidebar-w: 232px;
+  --sidebar-w-rail: 64px;
+  --topbar-h: 56px;
+  --page-max: 1400px;
+  --z-drawer: 60;
+  --z-modal: 70;
+  --z-toast: 80;
+}
+
+/* ==========================================================================
+   Dark theme — same semantics, re-grounded on warm charcoal, not blue-black.
+   ========================================================================== */
+[data-theme="dark"] {
+  --paper:        #14171a;
+  --surface:      #1b1f23;
+  --surface-2:    #22272b;
+  --surface-3:    #2d3338;
+  --surface-hover:#23282d;
+  --line:         #2c3236;
+  --line-strong:  #3b4247;
+
+  --ink:          #f0ede8;
+  --ink-2:        #b3bac1;
+  --ink-3:        #8b939b;
+  --ink-inverse:  #14171a;
+
+  --accent:       #4ea3bd;
+  --accent-hover: #6ab8d0;
+  --accent-quiet: #7cc0d4;
+  --accent-tint:  #1d2a30;
+  --accent-tint-2:#264049;
+  --accent-ring:  rgba(110, 190, 214, .40);
+
+  --ok:           #4cb37b;
+  --ok-tint:      #16261d;
+  --ok-quiet:     #66c290;
+
+  --warn:         #dfa43f;
+  --warn-tint:    #2b2314;
+  --warn-quiet:   #c99236;
+
+  --risk:         #e4776a;
+  --risk-tint:    #2c1a18;
+  --risk-quiet:   #d0685c;
+
+  --info:         #6da5cf;
+  --info-tint:    #1a2530;
+
+  --load-0: var(--surface-3);
+  --load-1: #2f4a53;
+  --load-2: #3f7385;
+  --load-3: var(--warn-quiet);
+  --load-4: var(--risk);
+
+  --sh-1: 0 1px 1px rgba(0, 0, 0, .28), 0 1px 3px -1px rgba(0, 0, 0, .3);
+  --sh-2: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 20px -8px rgba(0, 0, 0, .5);
+  --sh-3: 0 2px 8px rgba(0, 0, 0, .4), 0 28px 56px -18px rgba(0, 0, 0, .7);
+}
