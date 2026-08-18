@@ -16,17 +16,17 @@
         "userId": "user1",
         "userName": "Alex Chen",
         "content": "Thanks! Do we need to include the theoretical derivation of the DFT or just explain the concept?",
-        "date": "2026-08-15T11:45:57.767Z"
+        "date": "2026-08-15T11:47:53.114Z"
       },
       {
         "userId": "user3",
         "userName": "Marcus Tan",
         "content": "Just explain the concept and reference the textbook for the full derivation. Focus more on your experimental results and analysis.",
-        "date": "2026-08-15T23:45:57.767Z"
+        "date": "2026-08-15T23:47:53.114Z"
       }
     ],
     "upvotes": 12,
-    "createdAt": "2026-08-14T11:45:57.767Z"
+    "createdAt": "2026-08-14T11:47:53.114Z"
   },
   {
     "id": "disc2",
@@ -45,11 +45,11 @@
         "userId": "user5",
         "userName": "Jake Wong",
         "content": "Prof said scikit-learn is preferred but TensorFlow is allowed. Data augmentation is fine as long as you document your approach.",
-        "date": "2026-08-16T11:45:57.767Z"
+        "date": "2026-08-16T11:47:53.114Z"
       }
     ],
     "upvotes": 8,
-    "createdAt": "2026-08-13T11:45:57.767Z"
+    "createdAt": "2026-08-13T11:47:53.114Z"
   },
   {
     "id": "disc3",
@@ -67,10 +67,10 @@
         "userId": "user3",
         "userName": "Marcus Tan",
         "content": "Count me in! I can bring my notes on symmetrical components.",
-        "date": "2026-08-16T23:45:57.767Z"
+        "date": "2026-08-16T23:47:53.114Z"
       }
     ],
     "upvotes": 5,
-    "createdAt": "2026-08-16T11:45:57.767Z"
+    "createdAt": "2026-08-16T11:47:53.114Z"
   }
 ]
