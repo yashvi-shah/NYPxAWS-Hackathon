@@ -1,0 +1,68 @@
+[
+  {
+    "id": "help1",
+    "title": "Need help with Arduino sensor calibration",
+    "description": "My DHT22 temperature sensor is giving inaccurate readings.",
+    "category": "Practical",
+    "module": "EE4301 - IoT Systems",
+    "urgency": "high",
+    "userId": "user1",
+    "userName": "Alex Chen",
+    "status": "open",
+    "responses": [
+      {
+        "userId": "user3",
+        "userName": "Marcus Tan",
+        "message": "Try adding a 100nF capacitor across the power pins.",
+        "date": "2026-08-18T04:27:01.792308"
+      }
+    ],
+    "createdAt": "2026-08-17T04:27:01.792308"
+  },
+  {
+    "id": "help2",
+    "title": "SolidWorks assembly constraints help",
+    "description": "Struggling with mate constraints in my gearbox assembly.",
+    "category": "Practical",
+    "module": "ME2401 - CAD/CAM",
+    "urgency": "medium",
+    "userId": "user3",
+    "userName": "Marcus Tan",
+    "status": "open",
+    "responses": [],
+    "createdAt": "2026-08-18T04:27:01.792308"
+  },
+  {
+    "id": "help3",
+    "title": "Python scikit-learn: Feature selection for classification",
+    "description": "Dataset has 50+ features. Best approach for feature selection?",
+    "category": "Academic",
+    "module": "IT3402 - AI & ML",
+    "urgency": "medium",
+    "userId": "user1",
+    "userName": "Alex Chen",
+    "status": "open",
+    "responses": [
+      {
+        "userId": "user2",
+        "userName": "Sarah Lee",
+        "message": "Start with correlation matrix to remove highly correlated features.",
+        "date": "2026-08-18T16:27:01.792308"
+      }
+    ],
+    "createdAt": "2026-08-18T04:27:01.792308"
+  },
+  {
+    "id": "help4",
+    "title": "Need 3D printer access for prototype",
+    "description": "Looking for someone who has access to a 3D printer.",
+    "category": "Practical",
+    "module": "",
+    "urgency": "high",
+    "userId": "user1",
+    "userName": "Alex Chen",
+    "status": "open",
+    "responses": [],
+    "createdAt": "2026-08-19T04:27:01.792308"
+  }
+]
