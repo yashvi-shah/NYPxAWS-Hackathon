@@ -15,13 +15,12 @@ export class ApiError extends Error {
   }
 }
 
-const API_BASE = 'http://44.201.211.82:8000';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
 
 async function request(endpoint, { method = 'GET', body, signal } = {}) {
   let res;
   try {
-    res = await fetch(`${API_BASE}${endpoint}`, {
+    res = await fetch(endpoint, {
       method,
       headers: body === undefined ? undefined : JSON_HEADERS,
       body: body === undefined ? undefined : JSON.stringify(body),
@@ -123,7 +122,7 @@ export const api = {
 
   /* ---- file uploads ---- */
   uploadFile: (formData) => {
-    return fetch(`${API_BASE}/api/uploads/file`, { method: 'POST', body: formData })
+    return fetch('/api/uploads/file', { method: 'POST', body: formData })
       .then(res => res.ok ? res.json() : Promise.reject(new Error('Upload failed')));
   },
   listFiles: (userId, assignmentId) => request(`/api/uploads/files${qs({ userId, assignmentId })}`),
