@@ -1,4 +1,4 @@
-# 🎓 StudySphere - Academic Workload Management
+# 🎓 Gravity - Academic Workload Management
 
 An academic workload platform for polytechnic students. StudySphere does not just list what
 is due — it works out **what to do next and whether the week can actually take it**, by
@@ -50,6 +50,8 @@ measuring the work a student has left against the hours they really have free.
 - **Badges**: 10 achievement badges to unlock
 - **Leaderboard**: Compete with fellow students
 - **Early/Late Bonuses**: +25 XP for early submissions, -15 for late ones
+- **My Gravity** : Build a planet to see your progress through poly life
+- **Rewards**: Sponsored voucher rewards system
 
 ### 👥 Community & Peer Help
 - **Help Requests**: Ask for academic or practical help (soldering, CAD, 3D printing)
@@ -216,10 +218,9 @@ StudySphere aims to become an **all-in-one academic operating system** that help
 - Mobile app (React Native / PWA)
 - Integration with LMS platforms (Canvas, Moodle)
 - Real AI/LLM integration for smarter study plans
-- Sponsored voucher rewards system
 - Group project progress tracking
 - Real-time chat for peer tutoring
 
 ---
 
-Built with ❤️ for the Hackathon by the StudySphere Team
+Built with ❤️ for the Hackathon by the Gravity Team
