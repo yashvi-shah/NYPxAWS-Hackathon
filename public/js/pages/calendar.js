@@ -1,254 +1,428 @@
 /* ==========================================================================
-   calendar.js — a clean academic calendar with monthly events beside it.
-   Two-column on desktop: calendar grid + events for the displayed month.
+   calendar.js — Interactive academic calendar with month/week/day views.
+   Connects to /api/calendar/events for persistence.
    ========================================================================== */
 
-import { html, raw, render, pct, cx } from '../lib/dom.js';
+import { html, raw, render, cx } from '../lib/dom.js';
 import { icon } from '../lib/icons.js';
-import { myWorkspace } from '../services/store.js';
+import { api } from '../services/api.js';
+import { session } from '../services/store.js';
 import { setLayer } from '../core/actions.js';
-import { pageLoading, emptyState, errorState } from '../ui/states.js';
-import { dueBadge, railClass } from '../ui/bits.js';
-import { openAssignmentDetail } from '../features/assignmentDetail.js';
-import { openAssignmentForm } from '../features/assignmentForm.js';
-import { priorityTone } from '../core/priority.js';
-import { buildSchedule } from '../core/workload.js';
+import { openModal, closeOverlay } from '../ui/overlay.js';
+import { toast, toastOk, toastError } from '../ui/toast.js';
+import { pageLoading, emptyState } from '../ui/states.js';
 import {
-  dayKey, startOfDay, monthLong, weekdayShort, formatDayDate, daysUntil,
-  hours as fmtHours, plural, moduleCode, dueShort,
+  dayKey, monthLong, weekdayShort, weekdayLong, formatDayDate, plural,
 } from '../lib/format.js';
 
 const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const CATEGORIES = [
+  { id: 'study', label: 'Study', color: 'var(--accent)' },
+  { id: 'assignment', label: 'Assignment', color: 'var(--warn)' },
+  { id: 'exam', label: 'Exam', color: 'var(--risk)' },
+  { id: 'personal', label: 'Personal', color: 'var(--ok)' },
+  { id: 'ai-generated', label: 'AI Study Session', color: 'var(--info)' },
+  { id: 'event', label: 'Other', color: 'var(--ink-3)' },
+];
 
-const state = { monthOffset: 0, selected: null };
+const state = {
+  view: 'month', // month, week, day
+  offset: 0,
+  events: [],
+  loading: true,
+};
+
+/* --------------------------------------------------------------------------
+   Main render
+   -------------------------------------------------------------------------- */
 
 export async function render_(view, ctx) {
-  render(view, pageLoading({ title: 'Calendar', note: 'Placing your deadlines...', kind: 'grid' }));
+  render(view, pageLoading({ title: 'Calendar', note: 'Loading your schedule...', kind: 'grid' }));
 
-  let assignments = [];
-  let plans = [];
   try {
-    ({ assignments, plans } = await myWorkspace());
+    const userId = session.id;
+    const events = await api.calendarEvents(userId, '');
+    state.events = events || [];
+    state.loading = false;
   } catch (err) {
-    if (!ctx.isCurrent()) return;
-    render(view, html`
-      ${header(new Date())}
-      ${errorState({
-        title: 'The calendar didn\'t load',
-        message: 'Nothing has been changed. Try again in a moment.',
-        retry: 'retryCalendar',
-      })}
-    `);
-    setLayer('page', { retryCalendar: reload });
-    return;
+    state.events = [];
+    state.loading = false;
   }
 
   if (!ctx.isCurrent()) return;
+  registerActions(view);
+  renderCalendar(view);
+}
 
-  const schedule = buildSchedule({ assignments, plans, horizonDays: 21 });
-  registerActions({ assignments, plans, schedule });
-
-  const today = startOfDay(new Date());
-  const cursor = new Date(today.getFullYear(), today.getMonth() + state.monthOffset, 1);
-  const cells = buildMonth(cursor, { assignments, schedule });
-
-  // Events for this month
-  const monthEvents = assignments
-    .filter((a) => {
-      if (!a.deadline) return false;
-      const d = startOfDay(a.deadline);
-      return d.getMonth() === cursor.getMonth() && d.getFullYear() === cursor.getFullYear();
-    })
-    .sort((a, b) => String(a.deadline).localeCompare(String(b.deadline)));
+function renderCalendar(view) {
+  const today = new Date();
+  const cursor = getCursor(today);
 
   render(view, html`
-    ${header(cursor)}
-
-    <div class="cal-two-col">
-      <section class="card cal-card">
-        <div class="cal">
-          ${DOW.map((d) => html`<div class="cal-dow">${d}</div>`)}
-          ${cells.map((cell) => monthCell(cell))}
-        </div>
-      </section>
-
-      <section class="card cal-events-panel">
-        <header class="cal-events-header">
-          <h3>${monthLong(cursor.getMonth())} ${cursor.getFullYear()}</h3>
-          <span class="caption">${plural(monthEvents.length, 'event')}</span>
-        </header>
-        ${monthEvents.length ? eventsListByDate(monthEvents) : html`
-          <div style="padding:var(--sp-5)">
-            ${emptyState({
-              mark: 'calendar',
-              title: 'No deadlines this month.',
-              message: 'A clear month ahead.',
-              inline: true,
-            })}
-          </div>
-        `}
-      </section>
+    <div class="cal-page">
+      ${calHeader(cursor)}
+      ${state.view === 'month' ? monthView(cursor) : ''}
+      ${state.view === 'week' ? weekView(cursor) : ''}
+      ${state.view === 'day' ? dayView(cursor) : ''}
     </div>
   `);
 }
 
-function header(cursor) {
+function getCursor(today) {
+  if (state.view === 'month') {
+    return new Date(today.getFullYear(), today.getMonth() + state.offset, 1);
+  } else if (state.view === 'week') {
+    const d = new Date(today);
+    d.setDate(d.getDate() + state.offset * 7);
+    return d;
+  } else {
+    const d = new Date(today);
+    d.setDate(d.getDate() + state.offset);
+    return d;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Header
+   -------------------------------------------------------------------------- */
+
+function calHeader(cursor) {
+  let title = '';
+  if (state.view === 'month') title = `${monthLong(cursor.getMonth())} ${cursor.getFullYear()}`;
+  else if (state.view === 'week') title = `Week of ${formatDayDate(getWeekStart(cursor))}`;
+  else title = `${weekdayLong(cursor)}, ${formatDayDate(cursor)}`;
+
   return html`
-    <div class="page-head">
-      <div>
+    <div class="cal-header">
+      <div class="cal-header-left">
         <h1>Calendar</h1>
-        <p class="page-sub">Where your deadlines land</p>
-      </div>
-      <div class="page-actions">
-        <div class="btn-group">
-          <button class="btn btn-icon" data-act="prevMonth" aria-label="Previous month">${icon('chevronLeft', { size: 15 })}</button>
-          <button class="btn" data-act="thisMonth" style="min-width:132px">
-            ${monthLong(cursor.getMonth())} ${cursor.getFullYear()}
-          </button>
-          <button class="btn btn-icon" data-act="nextMonth" aria-label="Next month">${icon('chevronRight', { size: 15 })}</button>
+        <div class="cal-nav">
+          <button class="btn btn-icon" data-act="calPrev" aria-label="Previous">${icon('chevronLeft', { size: 16 })}</button>
+          <button class="btn cal-today-btn" data-act="calToday">Today</button>
+          <button class="btn btn-icon" data-act="calNext" aria-label="Next">${icon('chevronRight', { size: 16 })}</button>
+          <span class="cal-title">${title}</span>
         </div>
+      </div>
+      <div class="cal-header-right">
+        <div class="cal-view-switcher">
+          <button class="btn btn-sm ${state.view === 'month' ? 'btn-primary' : ''}" data-act="calViewMonth">Month</button>
+          <button class="btn btn-sm ${state.view === 'week' ? 'btn-primary' : ''}" data-act="calViewWeek">Week</button>
+          <button class="btn btn-sm ${state.view === 'day' ? 'btn-primary' : ''}" data-act="calViewDay">Day</button>
+        </div>
+        <button class="btn btn-primary btn-sm" data-act="calCreateEvent">
+          ${icon('plus', { size: 14 })}Event
+        </button>
       </div>
     </div>
   `;
 }
 
 /* --------------------------------------------------------------------------
-   Month grid
+   Month View
    -------------------------------------------------------------------------- */
 
-function buildMonth(cursor, { assignments, schedule }) {
+function monthView(cursor) {
   const year = cursor.getFullYear();
   const month = cursor.getMonth();
   const first = new Date(year, month, 1);
   const lead = (first.getDay() + 6) % 7;
   const start = new Date(year, month, 1 - lead);
-
-  const byDeadline = new Map();
-  assignments.forEach((a) => {
-    if (!a.deadline) return;
-    const key = dayKey(a.deadline);
-    if (!byDeadline.has(key)) byDeadline.set(key, []);
-    byDeadline.get(key).push(a);
-  });
+  const todayKey = dayKey(new Date());
 
   const cells = [];
-  const todayKey = dayKey(new Date());
-  for (let i = 0; i < 42; i += 1) {
+  for (let i = 0; i < 42; i++) {
     const date = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
     const key = dayKey(date);
-    const day = schedule.byKey.get(key) || null;
-    cells.push({
-      date,
-      key,
-      inMonth: date.getMonth() === month,
-      isToday: key === todayKey,
-      isSelected: key === state.selected,
-      deadlines: (byDeadline.get(key) || []).sort((a, b) => (b.priorityScore || 0) - (a.priorityScore || 0)),
-      load: day,
-    });
+    const dayEvents = state.events.filter(e => e.date === key);
+    cells.push({ date, key, inMonth: date.getMonth() === month, isToday: key === todayKey, events: dayEvents });
   }
+  // Trim trailing all-outside week
   const lastWeek = cells.slice(35);
-  return lastWeek.every((c) => !c.inMonth) ? cells.slice(0, 35) : cells;
-}
-
-function monthCell(cell) {
-  const load = cell.load;
-  const over = load ? load.over : 0;
-  const peak = load ? Math.max(load.capacity, load.required, 0.01) : 1;
-  const deadlineCount = cell.deadlines.length;
+  const finalCells = lastWeek.every(c => !c.inMonth) ? cells.slice(0, 35) : cells;
 
   return html`
-    <button class="${cx('cal-cell', !cell.inMonth && 'is-outside', cell.isToday && 'is-today',
-      cell.isSelected && 'is-selected', load && load.isOver && 'is-over')}"
-            data-act="selectDay" data-key="${cell.key}"
-            aria-label="${formatDayDate(cell.date)}${deadlineCount ? `, ${plural(deadlineCount, 'deadline')}` : ''}"
-            aria-pressed="${cell.isSelected ? 'true' : 'false'}">
-      <span class="cal-date">
-        <span class="n">${cell.date.getDate()}</span>
-      </span>
-
-      ${deadlineCount > 0 ? html`
-        <span class="cal-dots">
-          ${cell.deadlines.slice(0, 3).map((a) => html`
-            <i class="cal-dot-${chipTone(a)}"></i>
-          `)}
-          ${deadlineCount > 3 ? html`<span class="cal-dot-more">+${deadlineCount - 3}</span>` : raw('')}
-        </span>
-      ` : raw('')}
-
-      ${load && load.required > 0 ? html`
-        <span class="cal-loadbar">
-          <i style="width:${pct(Math.min(load.required, load.capacity), peak)}%"></i>
-          ${over > 0 ? html`<i class="over" style="width:${pct(over, peak)}%"></i>` : raw('')}
-        </span>
-      ` : raw('')}
-    </button>
-  `;
-}
-
-function chipTone(a) {
-  if (a.status === 'completed') return 'ok';
-  const d = daysUntil(a.deadline);
-  if (d !== null && d <= 1) return 'risk';
-  const tone = priorityTone(a);
-  return tone === 'risk' ? 'risk' : tone === 'warn' ? 'warn' : 'ok';
-}
-
-/* --------------------------------------------------------------------------
-   Monthly events panel
-   -------------------------------------------------------------------------- */
-
-function eventsListByDate(events) {
-  const byDate = new Map();
-  events.forEach((a) => {
-    const key = dayKey(a.deadline);
-    if (!byDate.has(key)) byDate.set(key, []);
-    byDate.get(key).push(a);
-  });
-
-  return html`
-    <div class="cal-events-list">
-      ${Array.from(byDate.entries()).sort(([a], [b]) => a.localeCompare(b)).map(([dateKey, items]) => html`
-        <div class="cal-event-group">
-          <div class="cal-event-date">${formatDayDate(dateKey)}</div>
-          ${items.map((a) => html`
-            <button class="cal-event-item" data-act="openAssignment" data-id="${a.id}">
-              <div class="cal-event-info">
-                <span class="cal-event-title">${a.title}</span>
-                <span class="cal-event-meta">${moduleCode(a.module)}${a.type ? ` \u00b7 ${a.type}` : ''}</span>
-              </div>
-              ${dueBadge(a)}
-            </button>
-          `)}
-        </div>
-      `)}
+    <div class="cal-month">
+      <div class="cal-month-grid">
+        ${DOW.map(d => html`<div class="cal-dow-header">${d}</div>`)}
+        ${finalCells.map(cell => html`
+          <div class="${cx('cal-month-cell', !cell.inMonth && 'is-outside', cell.isToday && 'is-today')}"
+               data-act="calClickDay" data-key="${cell.key}">
+            <span class="cal-month-date">${cell.date.getDate()}</span>
+            <div class="cal-month-events">
+              ${cell.events.slice(0, 3).map(evt => html`
+                <button class="cal-evt-chip cal-evt-${evt.category || 'event'}" data-act="calClickEvent" data-id="${evt.id}">
+                  ${evt.startTime ? html`<span class="cal-evt-time">${evt.startTime}</span>` : raw('')}
+                  <span class="cal-evt-label">${evt.title}</span>
+                </button>
+              `)}
+              ${cell.events.length > 3 ? html`<span class="cal-evt-more">+${cell.events.length - 3} more</span>` : raw('')}
+            </div>
+          </div>
+        `)}
+      </div>
     </div>
   `;
 }
 
-/* -------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+   Week View
+   -------------------------------------------------------------------------- */
 
-function registerActions() {
-  setLayer('page', {
-    retryCalendar: reload,
-    prevMonth: () => { state.monthOffset -= 1; reloadView(); },
-    nextMonth: () => { state.monthOffset += 1; reloadView(); },
-    thisMonth: () => { state.monthOffset = 0; state.selected = null; reloadView(); },
-    selectDay: (ds) => { state.selected = ds.key; reloadView(); },
-    openAssignment: (ds) => openAssignmentDetail(ds.id),
-    addOnDay: (ds) => openAssignmentForm({ deadline: ds.key }),
+function getWeekStart(d) {
+  const date = new Date(d);
+  const dow = (date.getDay() + 6) % 7;
+  date.setDate(date.getDate() - dow);
+  return date;
+}
+
+function weekView(cursor) {
+  const weekStart = getWeekStart(cursor);
+  const todayKey = dayKey(new Date());
+  const hours = [];
+  for (let h = 7; h <= 22; h++) hours.push(h);
+
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate() + i);
+    const key = dayKey(date);
+    const dayEvents = state.events.filter(e => e.date === key);
+    days.push({ date, key, isToday: key === todayKey, events: dayEvents });
+  }
+
+  return html`
+    <div class="cal-week">
+      <div class="cal-week-header">
+        <div class="cal-week-gutter"></div>
+        ${days.map(day => html`
+          <div class="cal-week-day-header ${day.isToday ? 'is-today' : ''}">
+            <span class="cal-week-dow">${weekdayShort(day.date)}</span>
+            <span class="cal-week-date-num">${day.date.getDate()}</span>
+          </div>
+        `)}
+      </div>
+      <div class="cal-week-body">
+        <div class="cal-week-gutter">
+          ${hours.map(h => html`<div class="cal-week-hour-label">${String(h).padStart(2, '0')}:00</div>`)}
+        </div>
+        ${days.map(day => html`
+          <div class="cal-week-col ${day.isToday ? 'is-today' : ''}" data-act="calClickDay" data-key="${day.key}">
+            ${hours.map(h => html`<div class="cal-week-slot" data-act="calClickSlot" data-key="${day.key}" data-hour="${h}"></div>`)}
+            ${day.events.map(evt => weekEventBlock(evt, hours))}
+          </div>
+        `)}
+      </div>
+    </div>
+  `;
+}
+
+function weekEventBlock(evt, hours) {
+  const startHour = evt.startTime ? parseInt(evt.startTime.split(':')[0]) : 9;
+  const startMin = evt.startTime ? parseInt(evt.startTime.split(':')[1] || '0') : 0;
+  const duration = evt.duration || 60;
+  const top = ((startHour - 7) * 60 + startMin) / (16 * 60) * 100;
+  const height = Math.max(duration / (16 * 60) * 100, 3);
+
+  return html`
+    <button class="cal-week-event cal-evt-${evt.category || 'event'}" data-act="calClickEvent" data-id="${evt.id}"
+            style="top:${top}%;height:${height}%">
+      <span class="cal-week-event-title">${evt.title}</span>
+      <span class="cal-week-event-time">${evt.startTime || ''}${evt.endTime ? ' - ' + evt.endTime : ''}</span>
+    </button>
+  `;
+}
+
+/* --------------------------------------------------------------------------
+   Day View
+   -------------------------------------------------------------------------- */
+
+function dayView(cursor) {
+  const key = dayKey(cursor);
+  const dayEvents = state.events.filter(e => e.date === key);
+  const hours = [];
+  for (let h = 7; h <= 22; h++) hours.push(h);
+
+  return html`
+    <div class="cal-day">
+      <div class="cal-day-timeline">
+        ${hours.map(h => html`
+          <div class="cal-day-hour" data-act="calClickSlot" data-key="${key}" data-hour="${h}">
+            <span class="cal-day-hour-label">${String(h).padStart(2, '0')}:00</span>
+            <div class="cal-day-hour-content">
+              ${dayEvents.filter(e => {
+                const eHour = e.startTime ? parseInt(e.startTime.split(':')[0]) : 9;
+                return eHour === h;
+              }).map(evt => html`
+                <button class="cal-day-event cal-evt-${evt.category || 'event'}" data-act="calClickEvent" data-id="${evt.id}">
+                  <span class="cal-day-event-title">${evt.title}</span>
+                  <span class="cal-day-event-meta">
+                    ${evt.startTime || ''}${evt.endTime ? ' - ' + evt.endTime : ''}
+                    ${evt.module ? ` · ${evt.module}` : ''}
+                  </span>
+                </button>
+              `)}
+            </div>
+          </div>
+        `)}
+      </div>
+      ${!dayEvents.length ? html`
+        <div style="padding:var(--sp-5);text-align:center">
+          ${emptyState({ mark: 'calendar', title: 'Nothing scheduled', message: 'Click a time slot to add an event.', inline: true })}
+        </div>
+      ` : raw('')}
+    </div>
+  `;
+}
+
+/* --------------------------------------------------------------------------
+   Event Modal (Create / Edit)
+   -------------------------------------------------------------------------- */
+
+function openEventModal({ date = '', startTime = '', event = null } = {}) {
+  const editing = Boolean(event);
+  const e = event || {};
+
+  openModal({
+    title: editing ? 'Edit Event' : 'New Event',
+    wide: true,
+    body: html`
+      <div id="event-form" class="col gap-4">
+        <div class="field">
+          <label for="evt-title">Title</label>
+          <input class="input" id="evt-title" maxlength="120" placeholder="e.g. ML Study Session" value="${e.title || ''}">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="evt-date">Date</label>
+            <input class="input" type="date" id="evt-date" value="${e.date || date || dayKey(new Date())}">
+          </div>
+          <div class="field">
+            <label for="evt-category">Category</label>
+            <select class="select" id="evt-category">
+              ${CATEGORIES.map(c => html`<option value="${c.id}" ${(e.category || 'study') === c.id ? raw('selected') : raw('')}>${c.label}</option>`)}
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="evt-start">Start Time</label>
+            <input class="input" type="time" id="evt-start" value="${e.startTime || startTime || '09:00'}">
+          </div>
+          <div class="field">
+            <label for="evt-end">End Time</label>
+            <input class="input" type="time" id="evt-end" value="${e.endTime || ''}">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="evt-duration">Duration (minutes)</label>
+            <input class="input" type="number" id="evt-duration" min="15" max="480" step="15" value="${e.duration || 60}">
+          </div>
+          <div class="field">
+            <label for="evt-module">Module <span class="field-hint">optional</span></label>
+            <input class="input" id="evt-module" placeholder="e.g. IT3402 - AI & ML" value="${e.module || ''}">
+          </div>
+        </div>
+        <div class="field">
+          <label for="evt-desc">Description <span class="field-hint">optional</span></label>
+          <textarea class="textarea" id="evt-desc" placeholder="Notes about this event...">${e.description || ''}</textarea>
+        </div>
+      </div>
+    `,
+    foot: html`
+      ${editing ? html`<button class="btn btn-danger" data-act="deleteEvent" type="button">Delete</button>` : raw('')}
+      <span style="flex:1"></span>
+      <button class="btn" data-act="closeOverlay" type="button">Cancel</button>
+      <button class="btn btn-primary" data-act="saveEvent" type="button">${editing ? 'Save' : 'Create'}</button>
+    `,
+    actions: {
+      saveEvent: () => saveEvent(editing ? e.id : null),
+      deleteEvent: () => deleteEvent(e.id),
+    },
   });
 }
 
-async function reloadView() {
+async function saveEvent(editingId) {
+  const val = (id) => document.getElementById(id)?.value?.trim() || '';
+
+  const title = val('evt-title');
+  if (!title) { document.getElementById('evt-title')?.focus(); return; }
+
+  const payload = {
+    title,
+    date: val('evt-date') || dayKey(new Date()),
+    startTime: val('evt-start'),
+    endTime: val('evt-end'),
+    duration: parseInt(val('evt-duration')) || 60,
+    category: val('evt-category') || 'event',
+    module: val('evt-module'),
+    description: val('evt-desc'),
+    userId: session.id,
+  };
+
+  closeOverlay({ silent: true });
+
+  try {
+    if (editingId) {
+      await api.updateCalendarEvent(editingId, payload);
+      toastOk('Event updated');
+    } else {
+      await api.createCalendarEvent(payload);
+      toastOk('Event created');
+    }
+    await refreshEvents();
+  } catch (err) {
+    toastError('Could not save event', err);
+  }
+}
+
+async function deleteEvent(eventId) {
+  if (!eventId) return;
+  closeOverlay({ silent: true });
+  try {
+    await api.deleteCalendarEvent(eventId);
+    toastOk('Event deleted');
+    await refreshEvents();
+  } catch (err) {
+    toastError('Could not delete event', err);
+  }
+}
+
+async function refreshEvents() {
+  try {
+    state.events = await api.calendarEvents(session.id, '') || [];
+  } catch { state.events = []; }
   const { refresh } = await import('../core/router.js');
   refresh();
 }
 
-async function reload() {
-  const { invalidate } = await import('../services/store.js');
-  invalidate();
-  reloadView();
+/* --------------------------------------------------------------------------
+   Actions
+   -------------------------------------------------------------------------- */
+
+function registerActions(view) {
+  setLayer('page', {
+    calPrev: () => { state.offset -= 1; renderCalendar(view); },
+    calNext: () => { state.offset += 1; renderCalendar(view); },
+    calToday: () => { state.offset = 0; renderCalendar(view); },
+    calViewMonth: () => { state.view = 'month'; state.offset = 0; renderCalendar(view); },
+    calViewWeek: () => { state.view = 'week'; state.offset = 0; renderCalendar(view); },
+    calViewDay: () => { state.view = 'day'; state.offset = 0; renderCalendar(view); },
+    calCreateEvent: () => openEventModal(),
+    calClickDay: (ds) => { state.view = 'day'; state.offset = dateDiffFromToday(ds.key); renderCalendar(view); },
+    calClickSlot: (ds) => openEventModal({ date: ds.key, startTime: `${String(ds.hour).padStart(2, '0')}:00` }),
+    calClickEvent: (ds) => {
+      const evt = state.events.find(e => e.id === ds.id);
+      if (evt) openEventModal({ event: evt });
+    },
+  });
+}
+
+function dateDiffFromToday(dateKey) {
+  const target = new Date(dateKey);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  target.setHours(0, 0, 0, 0);
+  return Math.round((target - today) / 86400000);
 }
 
 export default { render: render_ };

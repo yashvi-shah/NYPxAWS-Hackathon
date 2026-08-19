@@ -1,6 +1,9 @@
 /* ==========================================================================
    assignmentForm.js — add / edit an academic commitment.
-   Field names and types match the assignments contract exactly.
+
+   CRITICAL: This uses a div NOT a form to prevent any native browser
+   form submission. The ONLY way to create/save a commitment is by clicking
+   the explicit "Add commitment" / "Save changes" button.
    ========================================================================== */
 
 import { html, raw } from '../lib/dom.js';
@@ -8,7 +11,6 @@ import { api } from '../services/api.js';
 import { session } from '../services/store.js';
 import { dayKey, addDays } from '../lib/format.js';
 import { openModal, closeOverlay } from '../ui/overlay.js';
-import { formValues } from '../core/actions.js';
 import { mutate } from './mutate.js';
 import { estimateTotalHours } from '../core/workload.js';
 import { hours as fmtHours } from '../lib/format.js';
@@ -27,29 +29,29 @@ export function openAssignmentForm(assignment = null) {
       : 'Weightage and how confident you feel are what let Gravity time this properly.',
     wide: true,
     body: html`
-      <form id="assignment-form" data-act="submitAssignment" class="col gap-4" novalidate>
+      <div id="assignment-form" class="col gap-4">
         <div class="field">
           <label for="af-title">Title</label>
-          <input class="input" id="af-title" name="title" required maxlength="120"
+          <input class="input" id="af-title" maxlength="120"
                  placeholder="e.g. Machine Learning Classification Model" value="${a.title || ''}">
         </div>
 
         <div class="field">
           <label for="af-module">Module</label>
-          <input class="input" id="af-module" name="module" required maxlength="80"
+          <input class="input" id="af-module" maxlength="80"
                  placeholder="e.g. IT3402 - AI &amp; ML" value="${a.module || ''}">
         </div>
 
         <div class="field-row">
           <div class="field">
             <label for="af-type">Type of work</label>
-            <select class="select" id="af-type" name="type" data-input="previewEffort">
+            <select class="select" id="af-type" data-input="previewEffort">
               ${TYPES.map((t) => html`<option value="${t}" ${a.type === t ? raw('selected') : raw('')}>${t}</option>`)}
             </select>
           </div>
           <div class="field">
             <label for="af-deadline">Deadline</label>
-            <input class="input" type="date" id="af-deadline" name="deadline" required value="${defaultDeadline}">
+            <input class="input" type="date" id="af-deadline" value="${defaultDeadline}">
           </div>
         </div>
 
@@ -59,7 +61,7 @@ export function openAssignmentForm(assignment = null) {
               <span class="field-hint">share of the module grade</span>
             </label>
             <div class="row gap-3">
-              <input class="range grow" type="range" id="af-weightage" name="weightage" min="1" max="100" step="1"
+              <input class="range grow" type="range" id="af-weightage" min="1" max="100" step="1"
                      value="${a.weightage ?? 10}" data-input="previewEffort" aria-describedby="af-weightage-out">
               <output class="mono" id="af-weightage-out" style="min-width:38px;text-align:right">${a.weightage ?? 10}%</output>
             </div>
@@ -69,7 +71,7 @@ export function openAssignmentForm(assignment = null) {
               <span class="field-hint">how ready do you feel?</span>
             </label>
             <div class="row gap-3">
-              <input class="range grow" type="range" id="af-confidence" name="confidence" min="0" max="100" step="5"
+              <input class="range grow" type="range" id="af-confidence" min="0" max="100" step="5"
                      value="${a.confidence ?? 50}" data-input="previewEffort" aria-describedby="af-confidence-out">
               <output class="mono" id="af-confidence-out" style="min-width:38px;text-align:right">${a.confidence ?? 50}%</output>
             </div>
@@ -80,7 +82,7 @@ export function openAssignmentForm(assignment = null) {
           <div class="field">
             <label for="af-progress">Progress</label>
             <div class="row gap-3">
-              <input class="range grow" type="range" id="af-progress" name="progress" min="0" max="100" step="5"
+              <input class="range grow" type="range" id="af-progress" min="0" max="100" step="5"
                      value="${a.progress ?? 0}" data-input="previewEffort" aria-describedby="af-progress-out">
               <output class="mono" id="af-progress-out" style="min-width:38px;text-align:right">${a.progress ?? 0}%</output>
             </div>
@@ -89,27 +91,23 @@ export function openAssignmentForm(assignment = null) {
 
         <div class="field">
           <label for="af-description">Details <span class="field-hint">optional</span></label>
-          <textarea class="textarea" id="af-description" name="description"
+          <textarea class="textarea" id="af-description"
                     placeholder="Requirements, deliverables, anything you'll forget by next week…">${a.description || ''}</textarea>
         </div>
 
         <p class="well caption" id="af-estimate" aria-live="polite"></p>
-      </form>
+      </div>
     `,
     foot: html`
-      <button class="btn" data-act="closeOverlay">Cancel</button>
-      <button class="btn btn-primary" data-act="submitAssignmentButton">
+      <button class="btn" data-act="closeOverlay" type="button">Cancel</button>
+      <button class="btn btn-primary" data-act="submitAssignmentButton" type="button">
         ${editing ? 'Save changes' : 'Add commitment'}
       </button>
     `,
     initialFocus: '#af-title',
     actions: {
       previewEffort: () => syncPreview(),
-      submitAssignmentButton: () => {
-        const form = document.getElementById('assignment-form');
-        if (form) form.requestSubmit();
-      },
-      submitAssignment: (ds, form) => submit(form, editing ? a.id : null),
+      submitAssignmentButton: () => submitFromButton(editing ? a.id : null),
     },
     onMount: () => syncPreview(),
   });
@@ -149,25 +147,38 @@ function syncPreview() {
     + `, based on the type, weightage and your confidence. Generating a study plan replaces the estimate with real task times.`;
 }
 
-async function submit(form, editingId) {
-  const values = formValues(form);
-  if (!values.title || !values.module || !values.deadline) {
-    form.querySelector(':invalid, .input:placeholder-shown')?.focus();
-    return;
-  }
+/**
+ * Called ONLY when the user explicitly clicks "Add commitment" / "Save changes".
+ * Reads all field values directly from the DOM (no native form submission involved).
+ */
+async function submitFromButton(editingId) {
+  const val = (id) => {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+  };
+
+  const title = val('af-title');
+  const module = val('af-module');
+  const deadline = val('af-deadline');
+
+  // Validate required fields
+  if (!title) { document.getElementById('af-title')?.focus(); return; }
+  if (!module) { document.getElementById('af-module')?.focus(); return; }
+  if (!deadline) { document.getElementById('af-deadline')?.focus(); return; }
 
   const payload = {
-    title: values.title,
-    module: values.module,
-    type: values.type,
-    deadline: values.deadline,
-    weightage: Number(values.weightage) || 10,
-    confidence: Number(values.confidence) || 0,
-    description: values.description || '',
+    title,
+    module,
+    type: val('af-type') || 'Essay',
+    deadline,
+    weightage: Number(val('af-weightage')) || 10,
+    confidence: Number(val('af-confidence')) || 0,
+    description: val('af-description') || '',
     userId: session.id,
   };
-  if (editingId) payload.progress = Number(values.progress) || 0;
+  if (editingId) payload.progress = Number(val('af-progress')) || 0;
 
+  // Close modal FIRST then fire the API call
   closeOverlay({ silent: true });
 
   await mutate({

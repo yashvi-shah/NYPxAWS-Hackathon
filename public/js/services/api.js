@@ -109,6 +109,32 @@ export const api = {
   /* ---- gamification ---- */
   leaderboard: (opts) => request('/api/leaderboard', opts),
   badges: (opts) => request('/api/badges', opts),
+
+  /* ---- calendar events ---- */
+  calendarEvents: (userId, month) => request(`/api/calendar/events${qs({ userId, month })}`),
+  createCalendarEvent: (payload) => request('/api/calendar/events', { method: 'POST', body: payload }),
+  updateCalendarEvent: (id, payload) =>
+    request(`/api/calendar/events/${encodeURIComponent(id)}`, { method: 'PUT', body: payload }),
+  deleteCalendarEvent: (id) =>
+    request(`/api/calendar/events/${encodeURIComponent(id)}`, { method: 'DELETE' }),
+
+  /* ---- file uploads ---- */
+  uploadFile: (formData) => {
+    return fetch('/api/uploads/file', { method: 'POST', body: formData })
+      .then(res => res.ok ? res.json() : Promise.reject(new Error('Upload failed')));
+  },
+  listFiles: (userId, assignmentId) => request(`/api/uploads/files${qs({ userId, assignmentId })}`),
+  deleteFile: (id) => request(`/api/uploads/files/${encodeURIComponent(id)}`, { method: 'DELETE' }),
+  getFileContent: (id) => request(`/api/uploads/files/${encodeURIComponent(id)}/content`),
+
+  /* ---- AI endpoints ---- */
+  aiFlashcards: (payload) => request('/api/ai/flashcards', { method: 'POST', body: payload }),
+  aiCalendarActions: (payload) => request('/api/ai/calendar-actions', { method: 'POST', body: payload }),
+  aiWorkloadBalance: (payload) => request('/api/ai/workload-balance', { method: 'POST', body: payload }),
+  aiStudyPlanDraft: (payload) => request('/api/ai/study-plan/draft', { method: 'POST', body: payload }),
+  aiStudyPlanModify: (payload) => request('/api/ai/study-plan/modify', { method: 'POST', body: payload }),
+  aiStudyPlanAccept: (payload) => request('/api/ai/study-plan/accept', { method: 'POST', body: payload }),
+  aiChat: (payload) => request('/api/chat', { method: 'POST', body: payload }),
 };
 
 /**

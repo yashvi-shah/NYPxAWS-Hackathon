@@ -14,10 +14,10 @@
         "userId": "user3",
         "userName": "Marcus Tan",
         "message": "Try adding a 100nF capacitor across the power pins. Also make sure you're waiting at least 2 seconds between readings. I had the same issue last semester.",
-        "date": "2026-08-16T11:47:53.114Z"
+        "date": "2026-08-17T22:29:37.131Z"
       }
     ],
-    "createdAt": "2026-08-15T11:47:53.114Z"
+    "createdAt": "2026-08-16T22:29:37.131Z"
   },
   {
     "id": "help2",
@@ -30,7 +30,7 @@
     "userName": "Marcus Tan",
     "status": "open",
     "responses": [],
-    "createdAt": "2026-08-16T11:47:53.114Z"
+    "createdAt": "2026-08-17T22:29:37.131Z"
   },
   {
     "id": "help3",
@@ -47,10 +47,10 @@
         "userId": "user2",
         "userName": "Sarah Lee",
         "message": "Start with correlation matrix to remove highly correlated features. Then try SelectKBest or use feature_importances_ from a preliminary Random Forest. Also consider PCA if features are numerical.",
-        "date": "2026-08-16T23:47:53.114Z"
+        "date": "2026-08-18T10:29:37.131Z"
       }
     ],
-    "createdAt": "2026-08-16T11:47:53.114Z"
+    "createdAt": "2026-08-17T22:29:37.131Z"
   },
   {
     "id": "help4",
@@ -62,14 +62,7 @@
     "userId": "user1",
     "userName": "Alex Chen",
     "status": "open",
-    "responses": [
-      {
-        "userId": "user1",
-        "userName": "Alex Chen",
-        "message": "Hi buddy",
-        "date": "2026-08-17T11:49:38.117Z"
-      }
-    ],
-    "createdAt": "2026-08-17T11:47:53.114Z"
+    "responses": [],
+    "createdAt": "2026-08-18T22:29:37.131Z"
   }
 ]

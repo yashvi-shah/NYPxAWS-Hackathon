@@ -85,37 +85,30 @@ export function renderAuthScreen(root, { onSignedIn }) {
       </section>
 
       <div class="auth-form-wrap">
-        <form class="auth-form" data-act="signIn" novalidate>
+        <div class="auth-form" style="text-align:center">
           <div>
-            <h2>Sign in</h2>
-            <p class="meta" style="margin-top:4px">Pick up where your workload left off.</p>
+            <h2>Welcome back</h2>
+            <p class="meta" style="margin-top:4px">Sign in to pick up where your workload left off.</p>
           </div>
-          <div class="field">
-            <label for="signin-email">Email</label>
-            <input class="input" id="signin-email" name="email" type="email" autocomplete="username"
-                   required value="alex@studysphere.com">
-          </div>
-          <div class="field">
-            <label for="signin-password">Password</label>
-            <input class="input" id="signin-password" name="password" type="password"
-                   autocomplete="current-password" required value="demo123">
-          </div>
-          <button class="btn btn-primary btn-lg btn-full" type="submit" id="signin-submit">Sign in</button>
-          <p class="auth-demo">
-            Demo account — <code>alex@studysphere.com</code> / <code>demo123</code>.
-            Other students: sarah, marcus, priya, jake (same password).
+          <button class="btn btn-primary btn-lg btn-full" type="button" data-act="signInCognito" id="cognito-btn" style="margin-top:var(--sp-5)">
+            Sign in to Gravity
+          </button>
+          <p class="caption" style="margin-top:var(--sp-4)">
+            Use your Gravity account email and password.
           </p>
-        </form>
+        </div>
       </div>
     </div>
   `);
 
   setLayer('global', {
-    signIn: (ds, form) => signIn(form, onSignedIn),
+    signInCognito: async () => {
+      const btn = document.getElementById('cognito-btn');
+      if (btn) { btn.setAttribute('aria-disabled', 'true'); btn.innerHTML = '<span class="spinner"></span> Redirecting...'; }
+      const { signInWithCognito } = await import('../services/cognito.js');
+      await signInWithCognito();
+    },
   });
-
-  const email = document.getElementById('signin-email');
-  if (email) email.focus({ preventScroll: true });
 }
 
 async function signIn(form, onSignedIn) {
@@ -186,7 +179,7 @@ export function renderShell(root) {
           <a class="wordmark topbar-brand" href="#/today" data-act="goto" data-page="today" style="display:none">
             <span class="mark">${logoMark()}</span>
           </a>
-          <span class="topbar-date">${weekdayLong(now)}, ${now.getDate()} ${monthLong(now.getMonth())}</span>
+          <span class="topbar-date" id="topbar-clock">${weekdayLong(now)}, ${now.getDate()} ${monthLong(now.getMonth())} &middot; ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}</span>
           <div class="topbar-tools">
             <span class="streak-chip hide-narrow" id="streak-chip" data-tip="Days in a row you have kept moving"></span>
             ${NAV.filter((n) => n.group === 'secondary').map((n) => html`
@@ -196,6 +189,12 @@ export function renderShell(root) {
             <a class="icon-btn" href="#/settings" data-act="goto" data-page="settings" aria-label="Settings"
                     data-tip="Settings">${icon('gear', { size: 16 })}</a>
             <button class="icon-btn" id="theme-toggle" data-act="toggleTheme" aria-label="Switch theme"></button>
+            <div class="notif-wrap">
+              <button class="icon-btn" id="notif-btn" aria-label="Notifications" data-tip="Notifications">
+                ${icon('alert', { size: 16 })}
+              </button>
+              <div class="notif-dropdown" id="notif-dropdown"></div>
+            </div>
             <button class="icon-btn hide-narrow" data-act="openAvailability" aria-label="Adjust your available study time"
                     data-tip="Available study time">${icon('sliders', { size: 16 })}</button>
             <button class="btn btn-primary btn-sm" data-act="addAssignment" aria-label="Add a commitment">
@@ -220,6 +219,15 @@ export function renderShell(root) {
   };
   applyBrand();
   window.addEventListener('resize', applyBrand);
+
+  // Keep the topbar clock ticking.
+  const tickClock = () => {
+    const el = document.getElementById('topbar-clock');
+    if (!el) return;
+    const n = new Date();
+    el.textContent = `${weekdayLong(n)}, ${n.getDate()} ${monthLong(n.getMonth())} \u00b7 ${String(n.getHours()).padStart(2, '0')}:${String(n.getMinutes()).padStart(2, '0')}`;
+  };
+  window.setInterval(tickClock, 30000);
 
   setLayer('global', {
     goto: (ds) => navigate(ds.page),
@@ -307,10 +315,17 @@ export function syncUser() {
 }
 
 function signOut() {
+  const hasCognitoTokens = Boolean(localStorage.getItem('gravity.cognito.tokens'));
   session.clear();
   invalidate();
   window.location.hash = '';
-  window.location.reload();
+  if (hasCognitoTokens) {
+    // Sign out through Cognito to clear their session too
+    localStorage.removeItem('gravity.cognito.tokens');
+    import('../services/cognito.js').then(m => m.signOutCognito());
+  } else {
+    window.location.reload();
+  }
 }
 
 /** Ctrl/Cmd + 1…7 jumps between destinations; kept from the original app. */
