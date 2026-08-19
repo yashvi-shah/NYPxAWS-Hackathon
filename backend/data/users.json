@@ -1,0 +1,133 @@
+[
+  {
+    "id": "user1",
+    "name": "Alex Chen",
+    "email": "alex@studysphere.com",
+    "password": "demo123",
+    "course": "Electrical Engineering",
+    "year": 2,
+    "xp": 1290,
+    "streak": 7,
+    "lastActiveDate": "2026-08-19",
+    "avatar": "",
+    "badges": [
+      "first-assignment",
+      "streak-3",
+      "streak-7",
+      "early-bird"
+    ],
+    "xpHistory": [
+      {
+        "amount": 50,
+        "reason": "Completed: Circuit Analysis Report",
+        "date": "2026-08-13T04:27:01.792308"
+      },
+      {
+        "amount": 10,
+        "reason": "Added new assignment",
+        "date": "2026-08-14T04:27:01.792308"
+      },
+      {
+        "amount": 15,
+        "reason": "Generated study plan",
+        "date": "2026-08-15T04:27:01.792308"
+      },
+      {
+        "amount": 15,
+        "reason": "Generated study plan",
+        "date": "2026-08-16T04:27:01.792308"
+      },
+      {
+        "amount": 5,
+        "reason": "Started a discussion",
+        "date": "2026-08-17T04:27:01.792308"
+      },
+      {
+        "amount": 10,
+        "reason": "Progress on: IoT Prototype",
+        "date": "2026-08-18T04:27:01.792308"
+      }
+    ],
+    "createdAt": "2026-07-20T04:27:01.792308"
+  },
+  {
+    "id": "user2",
+    "name": "Sarah Lee",
+    "email": "sarah@studysphere.com",
+    "password": "demo123",
+    "course": "Information Technology",
+    "year": 2,
+    "xp": 980,
+    "streak": 4,
+    "lastActiveDate": "2026-08-19",
+    "avatar": "",
+    "badges": [
+      "first-assignment",
+      "streak-3",
+      "helper"
+    ],
+    "xpHistory": [],
+    "createdAt": "2026-07-25T04:27:01.792308"
+  },
+  {
+    "id": "user3",
+    "name": "Marcus Tan",
+    "email": "marcus@studysphere.com",
+    "password": "demo123",
+    "course": "Mechanical Engineering",
+    "year": 3,
+    "xp": 2100,
+    "streak": 12,
+    "lastActiveDate": "2026-08-19",
+    "avatar": "",
+    "badges": [
+      "first-assignment",
+      "streak-3",
+      "streak-7",
+      "early-bird",
+      "helper",
+      "planner",
+      "level-5"
+    ],
+    "xpHistory": [],
+    "createdAt": "2026-06-20T04:27:01.792308"
+  },
+  {
+    "id": "user4",
+    "name": "Priya Sharma",
+    "email": "priya@studysphere.com",
+    "password": "demo123",
+    "course": "Business Analytics",
+    "year": 1,
+    "xp": 450,
+    "streak": 2,
+    "lastActiveDate": "2026-08-19",
+    "avatar": "",
+    "badges": [
+      "first-assignment"
+    ],
+    "xpHistory": [],
+    "createdAt": "2026-08-09T04:27:01.792308"
+  },
+  {
+    "id": "user5",
+    "name": "Jake Wong",
+    "email": "jake@studysphere.com",
+    "password": "demo123",
+    "course": "Game Design",
+    "year": 2,
+    "xp": 1680,
+    "streak": 5,
+    "lastActiveDate": "2026-08-19",
+    "avatar": "",
+    "badges": [
+      "first-assignment",
+      "streak-3",
+      "streak-7",
+      "social",
+      "level-5"
+    ],
+    "xpHistory": [],
+    "createdAt": "2026-07-05T04:27:01.792308"
+  }
+]

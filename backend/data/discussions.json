@@ -1,0 +1,68 @@
+[
+  {
+    "id": "disc1",
+    "title": "Tips for DSP lab report writing",
+    "content": "Just finished my DSP lab report. Here are some tips...",
+    "module": "EE3205 - DSP",
+    "tags": [
+      "tips",
+      "lab-report",
+      "dsp"
+    ],
+    "userId": "user3",
+    "userName": "Marcus Tan",
+    "replies": [
+      {
+        "userId": "user1",
+        "userName": "Alex Chen",
+        "content": "Thanks! Do we need the theoretical derivation?",
+        "date": "2026-08-17T04:27:01.792308"
+      },
+      {
+        "userId": "user3",
+        "userName": "Marcus Tan",
+        "content": "Just explain the concept and reference the textbook.",
+        "date": "2026-08-17T16:27:01.792308"
+      }
+    ],
+    "upvotes": 12,
+    "createdAt": "2026-08-16T04:27:01.792308"
+  },
+  {
+    "id": "disc2",
+    "title": "Best practices for IoT security",
+    "content": "Sharing some security tips for IoT projects...",
+    "module": "EE4301 - IoT Systems",
+    "tags": [
+      "iot",
+      "security"
+    ],
+    "userId": "user1",
+    "userName": "Alex Chen",
+    "replies": [],
+    "upvotes": 5,
+    "createdAt": "2026-08-18T04:27:01.792308"
+  },
+  {
+    "id": "disc3",
+    "title": "ML model evaluation metrics comparison",
+    "content": "When to use accuracy vs F1-score vs ROC-AUC...",
+    "module": "IT3402 - AI & ML",
+    "tags": [
+      "ml",
+      "evaluation"
+    ],
+    "userId": "user2",
+    "userName": "Sarah Lee",
+    "replies": [
+      {
+        "userId": "user1",
+        "userName": "Alex Chen",
+        "content": "Great comparison. For imbalanced datasets F1 is much better.",
+        "date": "2026-08-18T16:27:01.792308"
+      }
+    ],
+    "upvotes": 8,
+    "createdAt": "2026-08-17T04:27:01.792308"
+  }
+]

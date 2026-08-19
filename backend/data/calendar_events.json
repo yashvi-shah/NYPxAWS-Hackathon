@@ -1,0 +1,71 @@
+[
+  {
+    "id": "evt1",
+    "title": "IoT Prototype Work",
+    "date": "2026-08-20",
+    "startTime": "19:00",
+    "endTime": "21:00",
+    "duration": 120,
+    "category": "study-session",
+    "assignmentId": "asgn1",
+    "module": "EE4301 - IoT Systems",
+    "description": "Work on sensor integration",
+    "userId": "user1",
+    "createdAt": "2026-08-19T04:27:01.792308"
+  },
+  {
+    "id": "evt2",
+    "title": "DSP Lab Report Writing",
+    "date": "2026-08-21",
+    "startTime": "14:00",
+    "endTime": "16:00",
+    "duration": 120,
+    "category": "study-session",
+    "assignmentId": "asgn2",
+    "module": "EE3205 - DSP",
+    "description": "Write methodology section",
+    "userId": "user1",
+    "createdAt": "2026-08-19T04:27:01.792308"
+  },
+  {
+    "id": "evt3",
+    "title": "ML Model Training",
+    "date": "2026-08-22",
+    "startTime": "19:00",
+    "endTime": "20:30",
+    "duration": 90,
+    "category": "study-session",
+    "assignmentId": "asgn3",
+    "module": "IT3402 - AI & ML",
+    "description": "Train and evaluate classifier",
+    "userId": "user1",
+    "createdAt": "2026-08-19T04:27:01.792308"
+  },
+  {
+    "id": "evt4",
+    "title": "Group Meeting",
+    "date": "2026-08-23",
+    "startTime": "10:00",
+    "endTime": "11:00",
+    "duration": 60,
+    "category": "event",
+    "module": "EE3101 - Power Systems",
+    "description": "Discuss presentation slides",
+    "userId": "user1",
+    "createdAt": "2026-08-19T04:27:01.792308"
+  },
+  {
+    "id": "evt5",
+    "title": "Essay Research",
+    "date": "2026-08-24",
+    "startTime": "15:00",
+    "endTime": "17:00",
+    "duration": 120,
+    "category": "study-session",
+    "assignmentId": "asgn4",
+    "module": "GE2101 - Communication",
+    "description": "Research AI impact sources",
+    "userId": "user1",
+    "createdAt": "2026-08-19T04:27:01.792308"
+  }
+]
