@@ -34,10 +34,20 @@ const navFlags = new Map();
    -------------------------------------------------------------------------- */
 
 export function initTheme() {
+  // Check local preference first, then user's server-stored theme, then OS
   const stored = preferences.get('theme');
-  applyTheme(stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  const userTheme = session.user?.theme;
+  const effective = stored || userTheme || null;
+
+  if (effective && effective !== 'system') {
+    applyTheme(effective);
+  } else {
+    applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  }
+
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (!preferences.get('theme')) applyTheme(e.matches ? 'dark' : 'light');
+    const pref = preferences.get('theme') || session.user?.theme;
+    if (!pref || pref === 'system') applyTheme(e.matches ? 'dark' : 'light');
   });
 }
 
@@ -54,6 +64,48 @@ function toggleTheme() {
   const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
   preferences.set({ theme: next });
   applyTheme(next);
+}
+
+/** Restore user settings from server data after login (theme, profile pic). */
+export function restoreUserSettings() {
+  const user = session.user;
+  if (!user) return;
+
+  // Merge any locally saved settings that the server might not have
+  try {
+    const local = JSON.parse(localStorage.getItem('gravity.userSettings.v1') || '{}');
+    if (local && typeof local === 'object') {
+      const fields = ['displayName', 'profilePic', 'theme', 'year', 'semester'];
+      for (const key of fields) {
+        if (local[key] !== undefined && !user[key]) {
+          session.merge({ [key]: local[key] });
+        }
+      }
+    }
+  } catch { /* ignore */ }
+
+  const resolved = session.user;
+
+  // Restore theme
+  if (resolved.theme && resolved.theme !== 'system') {
+    preferences.set({ theme: resolved.theme });
+    applyTheme(resolved.theme);
+  } else if (resolved.theme === 'system') {
+    preferences.set({ theme: null });
+    applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  }
+
+  // Restore profile pic on user chip
+  setTimeout(() => {
+    const chip = document.querySelector('.user-chip .avatar');
+    if (!chip) return;
+    if (resolved.profilePic) {
+      chip.style.backgroundImage = `url(${resolved.profilePic})`;
+      chip.style.backgroundSize = 'cover';
+      chip.style.backgroundPosition = 'center';
+      chip.textContent = '';
+    }
+  }, 50);
 }
 
 /* --------------------------------------------------------------------------
@@ -197,9 +249,6 @@ export function renderShell(root) {
             </div>
             <button class="icon-btn hide-narrow" data-act="openAvailability" aria-label="Adjust your available study time"
                     data-tip="Available study time">${icon('sliders', { size: 16 })}</button>
-            <button class="btn btn-primary btn-sm" data-act="addAssignment" aria-label="Add a commitment">
-              ${icon('plus', { size: 15 })}<span class="add-label">Add</span>
-            </button>
             <button class="icon-btn" data-act="signOut" aria-label="Sign out" data-tip="Sign out">
               ${icon('logout', { size: 16 })}
             </button>
@@ -296,14 +345,24 @@ export function syncUser() {
   const chip = document.getElementById('user-chip');
   if (chip && user) {
     const info = levelInfo();
+    const name = user.displayName || user.name || '';
     render(chip, html`
-      <span class="avatar" aria-hidden="true">${initials(user.name)}</span>
+      <span class="avatar" aria-hidden="true">${initials(name)}</span>
       <span class="user-text grow">
-        <span class="user-name truncate">${user.name}</span>
+        <span class="user-name truncate">${name}</span>
         <span class="user-sub num">Level ${info.level} · ${(user.xp || 0).toLocaleString()} XP</span>
       </span>
     `);
-    chip.setAttribute('title', `${user.name} — Level ${info.level}`);
+    chip.setAttribute('title', `${name} — Level ${info.level}`);
+
+    // Apply profile pic to avatar
+    const avatar = chip.querySelector('.avatar');
+    if (avatar && user.profilePic) {
+      avatar.style.backgroundImage = `url(${user.profilePic})`;
+      avatar.style.backgroundSize = 'cover';
+      avatar.style.backgroundPosition = 'center';
+      avatar.textContent = '';
+    }
   }
 
   const streak = document.getElementById('streak-chip');

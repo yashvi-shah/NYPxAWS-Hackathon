@@ -6,7 +6,7 @@
 import { initDelegation } from './core/actions.js';
 import { registerRoutes, startRouter } from './core/router.js';
 import { session, refreshUser } from './services/store.js';
-import { initTheme, renderShell, renderAuthScreen, initShortcuts, syncUser } from './ui/shell.js';
+import { initTheme, renderShell, renderAuthScreen, initShortcuts, syncUser, restoreUserSettings } from './ui/shell.js';
 import { handleCallback, getCurrentUser } from './services/cognito.js';
 
 import today from './pages/today.js';
@@ -51,6 +51,9 @@ function startApp(root) {
   initShortcuts();
   normaliseHash();
   startRouter('today');
+
+  // Restore user settings (theme, profile pic) from server data
+  restoreUserSettings();
 
   // Init notifications bell
   import('./features/notifications.js').then((m) => m.initNotifications());

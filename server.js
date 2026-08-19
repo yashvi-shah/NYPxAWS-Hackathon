@@ -288,6 +288,22 @@ async function handleAPI(req, res, pathname) {
     return sendJSON(res, { ...safe, levelInfo: calculateLevel(user.xp || 0) });
   }
 
+  // Settings — safe subset of user fields (won't touch xp/badges/etc)
+  if (pathname.match(/^\/api\/users\/[^/]+\/settings$/) && method === 'PUT') {
+    const userId = pathname.split('/')[3];
+    const user = db.users.getById(userId);
+    if (!user) return sendJSON(res, { error: 'User not found' }, 404);
+    // Only allow settings-safe fields
+    const allowed = ['displayName', 'name', 'year', 'semester', 'theme', 'profilePic', 'course'];
+    const patch = {};
+    for (const key of allowed) {
+      if (body[key] !== undefined) patch[key] = body[key];
+    }
+    const updated = db.users.update(userId, patch);
+    const { password, ...safe } = updated;
+    return sendJSON(res, { ...safe, levelInfo: calculateLevel(updated.xp || 0) });
+  }
+
   if (pathname.startsWith('/api/users/') && method === 'PUT') {
     const userId = pathname.split('/')[3];
     const user = db.users.getById(userId);
