@@ -7,11 +7,12 @@
     "deadline": "2026-08-20",
     "weightage": 40,
     "confidence": 35,
-    "progress": 45,
+    "progress": 60,
     "status": "pending",
     "description": "Design and build a smart home IoT prototype using Arduino and sensors. Must include temperature monitoring, light control, and mobile app integration.",
     "userId": "user1",
-    "createdAt": "2026-08-04T15:48:30.295Z"
+    "createdAt": "2026-08-04T22:29:37.131Z",
+    "updatedAt": "2026-08-18T22:36:16.864Z"
   },
   {
     "id": "asgn2",
@@ -25,7 +26,7 @@
     "status": "pending",
     "description": "Write lab report on FFT analysis and signal filtering experiments conducted in Week 8.",
     "userId": "user1",
-    "createdAt": "2026-08-11T15:48:30.295Z"
+    "createdAt": "2026-08-11T22:29:37.131Z"
   },
   {
     "id": "asgn3",
@@ -39,7 +40,7 @@
     "status": "pending",
     "description": "Build a classification model using Python scikit-learn. Dataset provided. Must achieve >85% accuracy.",
     "userId": "user1",
-    "createdAt": "2026-08-13T15:48:30.295Z"
+    "createdAt": "2026-08-13T22:29:37.131Z"
   },
   {
     "id": "asgn4",
@@ -53,7 +54,7 @@
     "status": "pending",
     "description": "2000-word essay on the impact of AI in engineering. APA format required.",
     "userId": "user1",
-    "createdAt": "2026-08-15T15:48:30.295Z"
+    "createdAt": "2026-08-15T22:29:37.131Z"
   },
   {
     "id": "asgn5",
@@ -67,7 +68,7 @@
     "status": "pending",
     "description": "15-minute group presentation on renewable energy integration. Slides + demo required.",
     "userId": "user1",
-    "createdAt": "2026-08-08T15:48:30.295Z"
+    "createdAt": "2026-08-08T22:29:37.131Z"
   },
   {
     "id": "asgn6",
@@ -81,7 +82,7 @@
     "status": "pending",
     "description": "Normalize given schema to 3NF. Submit SQL scripts and ER diagram.",
     "userId": "user1",
-    "createdAt": "2026-08-13T15:48:30.295Z"
+    "createdAt": "2026-08-13T22:29:37.131Z"
   },
   {
     "id": "asgn7",
@@ -95,7 +96,7 @@
     "status": "pending",
     "description": "Full-stack web application with React frontend and Node.js backend. Must include authentication and CRUD operations.",
     "userId": "user2",
-    "createdAt": "2026-07-29T15:48:30.295Z"
+    "createdAt": "2026-07-29T22:29:37.131Z"
   },
   {
     "id": "asgn8",
@@ -109,6 +110,188 @@
     "status": "pending",
     "description": "Complete assembly drawing of gearbox mechanism in SolidWorks. Submit .SLDASM and .PDF files.",
     "userId": "user3",
-    "createdAt": "2026-08-08T15:48:30.295Z"
+    "createdAt": "2026-08-08T22:29:37.131Z"
+  },
+  {
+    "title": "Machine learning model",
+    "module": "IT320",
+    "type": "Essay",
+    "deadline": "2026-08-26",
+    "weightage": 60,
+    "confidence": 50,
+    "progress": 0,
+    "status": "pending",
+    "description": "",
+    "userId": "user1",
+    "id": "msz8mqbdrni1c",
+    "createdAt": "2026-08-18T22:32:09.145Z"
+  },
+  {
+    "title": "Machine",
+    "module": "Test IT",
+    "type": "Essay",
+    "deadline": "2026-08-26",
+    "weightage": 61,
+    "confidence": 85,
+    "progress": 0,
+    "status": "pending",
+    "description": "",
+    "userId": "user1",
+    "id": "msz8nj7ntmo81",
+    "createdAt": "2026-08-18T22:32:46.595Z"
+  },
+  {
+    "title": "IAML",
+    "module": "Test 3",
+    "type": "Essay",
+    "deadline": "2026-08-26",
+    "weightage": 10,
+    "confidence": 50,
+    "progress": 0,
+    "status": "pending",
+    "description": "",
+    "userId": "user1",
+    "id": "msz9245umwdvd",
+    "createdAt": "2026-08-18T22:44:06.930Z"
+  },
+  {
+    "title": "AIM@",
+    "module": "Test IT",
+    "type": "Essay",
+    "deadline": "2026-08-26",
+    "weightage": 10,
+    "confidence": 50,
+    "progress": 0,
+    "status": "pending",
+    "description": "",
+    "userId": "user1",
+    "id": "msz92c3d7qtws",
+    "createdAt": "2026-08-18T22:44:17.209Z"
+  },
+  {
+    "title": "AIML",
+    "module": "Test 4",
+    "type": "Essay",
+    "deadline": "2026-08-26",
+    "weightage": 53,
+    "confidence": 50,
+    "progress": 0,
+    "status": "pending",
+    "description": "",
+    "userId": "user1",
+    "id": "msz92ncjmtef3",
+    "createdAt": "2026-08-18T22:44:31.795Z"
+  },
+  {
+    "title": "s",
+    "module": "dsdsd",
+    "type": "Essay",
+    "deadline": "2026-08-26",
+    "weightage": 10,
+    "confidence": 50,
+    "progress": 0,
+    "status": "pending",
+    "description": "",
+    "userId": "user1",
+    "id": "msz976lx7nu0i",
+    "createdAt": "2026-08-18T22:48:03.381Z"
+  },
+  {
+    "title": "zc",
+    "module": "sdsd",
+    "type": "Essay",
+    "deadline": "2026-08-26",
+    "weightage": 10,
+    "confidence": 50,
+    "progress": 0,
+    "status": "pending",
+    "description": "",
+    "userId": "user1",
+    "id": "msz9le4qcegsr",
+    "createdAt": "2026-08-18T22:59:06.314Z"
+  },
+  {
+    "title": "sdsd",
+    "module": "sdsd",
+    "type": "Essay",
+    "deadline": "2026-08-26",
+    "weightage": 10,
+    "confidence": 50,
+    "progress": 0,
+    "status": "pending",
+    "description": "",
+    "userId": "user1",
+    "id": "msz9ll2zvn010",
+    "createdAt": "2026-08-18T22:59:15.323Z"
+  },
+  {
+    "title": "sds",
+    "module": "sdsd",
+    "type": "Essay",
+    "deadline": "2026-08-26",
+    "weightage": 10,
+    "confidence": 50,
+    "progress": 0,
+    "status": "pending",
+    "description": "",
+    "userId": "user1",
+    "id": "msz9lpksi7h1k",
+    "createdAt": "2026-08-18T22:59:21.149Z"
+  },
+  {
+    "title": "TestDebug",
+    "module": "Test IT",
+    "type": "Essay",
+    "deadline": "2026-08-26",
+    "weightage": 10,
+    "confidence": 50,
+    "progress": 0,
+    "status": "pending",
+    "description": "",
+    "userId": "user1",
+    "id": "msz9upfzpd6js",
+    "createdAt": "2026-08-18T23:06:20.879Z"
+  },
+  {
+    "title": "Machine Learning",
+    "module": "sdsd",
+    "type": "Essay",
+    "deadline": "2026-08-26",
+    "weightage": 10,
+    "confidence": 50,
+    "progress": 0,
+    "status": "pending",
+    "description": "",
+    "userId": "user1",
+    "id": "msza7cebwl6d1",
+    "createdAt": "2026-08-18T23:16:10.499Z"
+  },
+  {
+    "title": "MLMOdel",
+    "module": "AI & ML",
+    "type": "Presentation",
+    "deadline": "2026-08-13",
+    "weightage": 37,
+    "confidence": 50,
+    "progress": 0,
+    "status": "pending",
+    "description": "Need dubmity individual rreflection too",
+    "userId": "user1",
+    "id": "mszanua1qofjv",
+    "createdAt": "2026-08-18T23:29:00.169Z"
+  },
+  {
+    "title": "wrwr",
+    "module": "wewew",
+    "type": "Essay",
+    "deadline": "2026-08-26",
+    "weightage": 25,
+    "confidence": 80,
+    "progress": 0,
+    "status": "pending",
+    "description": "yyty",
+    "userId": "user1",
+    "id": "mszcc4x8mernt",
+    "createdAt": "2026-08-19T00:15:53.324Z"
   }
 ]

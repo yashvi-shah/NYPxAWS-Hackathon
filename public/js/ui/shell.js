@@ -85,37 +85,30 @@ export function renderAuthScreen(root, { onSignedIn }) {
       </section>
 
       <div class="auth-form-wrap">
-        <form class="auth-form" data-act="signIn" novalidate>
+        <div class="auth-form" style="text-align:center">
           <div>
-            <h2>Sign in</h2>
-            <p class="meta" style="margin-top:4px">Pick up where your workload left off.</p>
+            <h2>Welcome back</h2>
+            <p class="meta" style="margin-top:4px">Sign in to pick up where your workload left off.</p>
           </div>
-          <div class="field">
-            <label for="signin-email">Email</label>
-            <input class="input" id="signin-email" name="email" type="email" autocomplete="username"
-                   required value="alex@studysphere.com">
-          </div>
-          <div class="field">
-            <label for="signin-password">Password</label>
-            <input class="input" id="signin-password" name="password" type="password"
-                   autocomplete="current-password" required value="demo123">
-          </div>
-          <button class="btn btn-primary btn-lg btn-full" type="submit" id="signin-submit">Sign in</button>
-          <p class="auth-demo">
-            Demo account — <code>alex@studysphere.com</code> / <code>demo123</code>.
-            Other students: sarah, marcus, priya, jake (same password).
+          <button class="btn btn-primary btn-lg btn-full" type="button" data-act="signInCognito" id="cognito-btn" style="margin-top:var(--sp-5)">
+            Sign in to Gravity
+          </button>
+          <p class="caption" style="margin-top:var(--sp-4)">
+            Use your Gravity account email and password.
           </p>
-        </form>
+        </div>
       </div>
     </div>
   `);
 
   setLayer('global', {
-    signIn: (ds, form) => signIn(form, onSignedIn),
+    signInCognito: async () => {
+      const btn = document.getElementById('cognito-btn');
+      if (btn) { btn.setAttribute('aria-disabled', 'true'); btn.innerHTML = '<span class="spinner"></span> Redirecting...'; }
+      const { signInWithCognito } = await import('../services/cognito.js');
+      await signInWithCognito();
+    },
   });
-
-  const email = document.getElementById('signin-email');
-  if (email) email.focus({ preventScroll: true });
 }
 
 async function signIn(form, onSignedIn) {
@@ -322,10 +315,17 @@ export function syncUser() {
 }
 
 function signOut() {
+  const hasCognitoTokens = Boolean(localStorage.getItem('gravity.cognito.tokens'));
   session.clear();
   invalidate();
   window.location.hash = '';
-  window.location.reload();
+  if (hasCognitoTokens) {
+    // Sign out through Cognito to clear their session too
+    localStorage.removeItem('gravity.cognito.tokens');
+    import('../services/cognito.js').then(m => m.signOutCognito());
+  } else {
+    window.location.reload();
+  }
 }
 
 /** Ctrl/Cmd + 1…7 jumps between destinations; kept from the original app. */

@@ -57,6 +57,124 @@
     ],
     "estimatedHours": 6.75,
     "userId": "user1",
-    "createdAt": "2026-08-17T15:48:30.295Z"
+    "createdAt": "2026-08-17T22:29:37.131Z"
+  },
+  {
+    "assignmentId": "asgn6",
+    "assignmentTitle": "Database Normalization Exercise",
+    "module": "IT2205 - Databases",
+    "totalDays": 1,
+    "tasks": [
+      {
+        "id": "task-0",
+        "title": "Understand requirements",
+        "scheduledDate": "2026-08-18",
+        "duration": 30,
+        "completed": false,
+        "order": 1
+      },
+      {
+        "id": "task-1",
+        "title": "Design solution architecture",
+        "scheduledDate": "2026-08-18",
+        "duration": 30,
+        "completed": false,
+        "order": 2
+      },
+      {
+        "id": "task-2",
+        "title": "Set up project structure",
+        "scheduledDate": "2026-08-18",
+        "duration": 30,
+        "completed": false,
+        "order": 3
+      },
+      {
+        "id": "task-3",
+        "title": "Implement core features",
+        "scheduledDate": "2026-08-18",
+        "duration": 30,
+        "completed": false,
+        "order": 4
+      },
+      {
+        "id": "task-4",
+        "title": "Testing & debugging",
+        "scheduledDate": "2026-08-18",
+        "duration": 30,
+        "completed": false,
+        "order": 5
+      },
+      {
+        "id": "task-5",
+        "title": "Documentation & submission",
+        "scheduledDate": "2026-08-18",
+        "duration": 30,
+        "completed": false,
+        "order": 6
+      }
+    ],
+    "estimatedHours": 3,
+    "id": "msz8pk7np0sr9",
+    "createdAt": "2026-08-18T22:34:21.203Z"
+  },
+  {
+    "assignmentId": "mszanua1qofjv",
+    "assignmentTitle": "MLMOdel",
+    "module": "AI & ML",
+    "totalDays": 1,
+    "tasks": [
+      {
+        "id": "task-0",
+        "title": "Research content",
+        "scheduledDate": "2026-08-19",
+        "duration": 74,
+        "completed": false,
+        "order": 1
+      },
+      {
+        "id": "task-1",
+        "title": "Create slide outline",
+        "scheduledDate": "2026-08-19",
+        "duration": 74,
+        "completed": false,
+        "order": 2
+      },
+      {
+        "id": "task-2",
+        "title": "Design slides",
+        "scheduledDate": "2026-08-19",
+        "duration": 74,
+        "completed": false,
+        "order": 3
+      },
+      {
+        "id": "task-3",
+        "title": "Add visuals & animations",
+        "scheduledDate": "2026-08-19",
+        "duration": 74,
+        "completed": false,
+        "order": 4
+      },
+      {
+        "id": "task-4",
+        "title": "Practice delivery",
+        "scheduledDate": "2026-08-19",
+        "duration": 74,
+        "completed": false,
+        "order": 5
+      },
+      {
+        "id": "task-5",
+        "title": "Final review",
+        "scheduledDate": "2026-08-19",
+        "duration": 74,
+        "completed": false,
+        "order": 6
+      }
+    ],
+    "estimatedHours": 7.4,
+    "id": "mszcccum3w911",
+    "createdAt": "2026-08-19T00:16:03.598Z"
   }
 ]

@@ -6,9 +6,9 @@
     "password": "demo123",
     "course": "Electrical Engineering",
     "year": 2,
-    "xp": 1250,
-    "streak": 7,
-    "lastActiveDate": "2026-08-18",
+    "xp": 1410,
+    "streak": 8,
+    "lastActiveDate": "2026-08-19",
     "avatar": "🎓",
     "badges": [
       "first-assignment",
@@ -20,45 +20,120 @@
       {
         "amount": 50,
         "reason": "Completed: Circuit Analysis Report",
-        "date": "2026-08-12T15:48:30.295Z"
+        "date": "2026-08-12T22:29:37.131Z"
       },
       {
         "amount": 25,
         "reason": "Early submission bonus!",
-        "date": "2026-08-12T15:48:30.295Z"
+        "date": "2026-08-12T22:29:37.131Z"
       },
       {
         "amount": 10,
         "reason": "Added new assignment",
-        "date": "2026-08-13T15:48:30.295Z"
+        "date": "2026-08-13T22:29:37.131Z"
       },
       {
         "amount": 15,
         "reason": "Generated study plan",
-        "date": "2026-08-14T15:48:30.295Z"
+        "date": "2026-08-14T22:29:37.131Z"
       },
       {
         "amount": 50,
         "reason": "Completed: Database Design Project",
-        "date": "2026-08-15T15:48:30.295Z"
+        "date": "2026-08-15T22:29:37.131Z"
       },
       {
         "amount": 20,
         "reason": "Helped a peer",
-        "date": "2026-08-16T15:48:30.295Z"
+        "date": "2026-08-16T22:29:37.131Z"
       },
       {
         "amount": 10,
         "reason": "Progress on: IoT Prototype",
-        "date": "2026-08-17T15:48:30.295Z"
+        "date": "2026-08-17T22:29:37.131Z"
       },
       {
         "amount": 5,
         "reason": "Started a discussion",
-        "date": "2026-08-18T15:48:30.295Z"
+        "date": "2026-08-18T22:29:37.131Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Added new assignment",
+        "date": "2026-08-18T22:32:09.147Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Added new assignment",
+        "date": "2026-08-18T22:32:46.597Z"
+      },
+      {
+        "amount": 15,
+        "reason": "Generated study plan",
+        "date": "2026-08-18T22:34:21.205Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Added new assignment",
+        "date": "2026-08-18T22:44:06.932Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Added new assignment",
+        "date": "2026-08-18T22:44:17.211Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Added new assignment",
+        "date": "2026-08-18T22:44:31.797Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Added new assignment",
+        "date": "2026-08-18T22:48:03.383Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Added new assignment",
+        "date": "2026-08-18T22:59:06.316Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Added new assignment",
+        "date": "2026-08-18T22:59:15.325Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Added new assignment",
+        "date": "2026-08-18T22:59:21.151Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Added new assignment",
+        "date": "2026-08-18T23:06:20.882Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Added new assignment",
+        "date": "2026-08-18T23:16:10.501Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Added new assignment",
+        "date": "2026-08-18T23:29:00.171Z"
+      },
+      {
+        "amount": 10,
+        "reason": "Added new assignment",
+        "date": "2026-08-19T00:15:53.327Z"
+      },
+      {
+        "amount": 15,
+        "reason": "Generated study plan",
+        "date": "2026-08-19T00:16:03.600Z"
       }
     ],
-    "createdAt": "2026-07-19T15:48:30.295Z"
+    "createdAt": "2026-07-19T22:29:37.131Z"
   },
   {
     "id": "user2",
@@ -77,7 +152,7 @@
       "helper"
     ],
     "xpHistory": [],
-    "createdAt": "2026-07-24T15:48:30.295Z"
+    "createdAt": "2026-07-24T22:29:37.131Z"
   },
   {
     "id": "user3",
@@ -100,7 +175,7 @@
       "level-5"
     ],
     "xpHistory": [],
-    "createdAt": "2026-06-19T15:48:30.295Z"
+    "createdAt": "2026-06-19T22:29:37.131Z"
   },
   {
     "id": "user4",
@@ -117,7 +192,7 @@
       "first-assignment"
     ],
     "xpHistory": [],
-    "createdAt": "2026-08-08T15:48:30.295Z"
+    "createdAt": "2026-08-08T22:29:37.131Z"
   },
   {
     "id": "user5",
@@ -138,6 +213,6 @@
       "level-5"
     ],
     "xpHistory": [],
-    "createdAt": "2026-07-04T15:48:30.295Z"
+    "createdAt": "2026-07-04T22:29:37.131Z"
   }
 ]

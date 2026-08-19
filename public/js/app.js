@@ -7,6 +7,7 @@ import { initDelegation } from './core/actions.js';
 import { registerRoutes, startRouter } from './core/router.js';
 import { session, refreshUser } from './services/store.js';
 import { initTheme, renderShell, renderAuthScreen, initShortcuts, syncUser } from './ui/shell.js';
+import { handleCallback, getCurrentUser } from './services/cognito.js';
 
 import today from './pages/today.js';
 import commitments from './pages/commitments.js';
@@ -73,7 +74,7 @@ function applyRewardDeductions() {
   }
 }
 
-function boot() {
+async function boot() {
   const root = document.getElementById('app');
   if (!root) return;
 
@@ -81,8 +82,39 @@ function boot() {
   initDelegation(document.body);
   registerRoutes(ROUTES);
 
-  if (session.isSignedIn()) startApp(root);
-  else renderAuthScreen(root, { onSignedIn: () => startApp(root) });
+  // Handle Cognito OAuth callback (exchange code for tokens)
+  const cognitoUser = await handleCallback();
+  if (cognitoUser) {
+    // Cognito sign-in succeeded — create a local session from Cognito identity
+    session.set({
+      id: cognitoUser.id,
+      name: cognitoUser.name,
+      email: cognitoUser.email,
+      avatar: null,
+      xp: 0,
+      streak: 0,
+    });
+    startApp(root);
+    return;
+  }
+
+  // Check if already authenticated via Cognito tokens (returning user)
+  const existingCognitoUser = getCurrentUser();
+  if (existingCognitoUser) {
+    session.set({
+      id: existingCognitoUser.id,
+      name: existingCognitoUser.name,
+      email: existingCognitoUser.email,
+      avatar: null,
+      xp: 0,
+      streak: 0,
+    });
+    startApp(root);
+    return;
+  }
+
+  // No valid Cognito session — show login screen
+  renderAuthScreen(root, { onSignedIn: () => startApp(root) });
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);

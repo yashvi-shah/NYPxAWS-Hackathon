@@ -7,8 +7,9 @@ from functools import lru_cache
 
 class Settings(BaseSettings):
     # AWS
-    aws_region: str = "ap-southeast-1"
+    aws_region: str = "us-east-1"
     dynamodb_table_prefix: str = "gravity_"
+    s3_bucket: str = "gravity-uploads"
 
     # Gemini AI
     gemini_api_key: str = ""

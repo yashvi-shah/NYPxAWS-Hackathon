@@ -7,5 +7,10 @@ __pycache__/
 *.pyc
 .env
 backend/.env
+backend/.env.production
 venv/
 .venv/
+
+# Uploads (dev mode local storage)
+backend/uploads/
+uploads/

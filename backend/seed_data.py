@@ -82,10 +82,22 @@ def seed():
         {"id": "disc3", "title": "ML model evaluation metrics comparison", "content": "When to use accuracy vs F1-score vs ROC-AUC...", "module": "IT3402 - AI & ML", "tags": ["ml", "evaluation"], "userId": "user2", "userName": "Sarah Lee", "replies": [{"userId": "user1", "userName": "Alex Chen", "content": "Great comparison. For imbalanced datasets F1 is much better.", "date": (NOW - 0.5 * DAY).isoformat()}], "upvotes": 8, "createdAt": (NOW - 2 * DAY).isoformat()},
     ]
 
+    # Sample calendar events
+    calendar_events = [
+        {"id": "evt1", "title": "IoT Prototype Work", "date": (NOW + 1 * DAY).date().isoformat(), "startTime": "19:00", "endTime": "21:00", "duration": 120, "category": "study-session", "assignmentId": "asgn1", "module": "EE4301 - IoT Systems", "description": "Work on sensor integration", "userId": "user1", "createdAt": NOW.isoformat()},
+        {"id": "evt2", "title": "DSP Lab Report Writing", "date": (NOW + 2 * DAY).date().isoformat(), "startTime": "14:00", "endTime": "16:00", "duration": 120, "category": "study-session", "assignmentId": "asgn2", "module": "EE3205 - DSP", "description": "Write methodology section", "userId": "user1", "createdAt": NOW.isoformat()},
+        {"id": "evt3", "title": "ML Model Training", "date": (NOW + 3 * DAY).date().isoformat(), "startTime": "19:00", "endTime": "20:30", "duration": 90, "category": "study-session", "assignmentId": "asgn3", "module": "IT3402 - AI & ML", "description": "Train and evaluate classifier", "userId": "user1", "createdAt": NOW.isoformat()},
+        {"id": "evt4", "title": "Group Meeting", "date": (NOW + 4 * DAY).date().isoformat(), "startTime": "10:00", "endTime": "11:00", "duration": 60, "category": "event", "module": "EE3101 - Power Systems", "description": "Discuss presentation slides", "userId": "user1", "createdAt": NOW.isoformat()},
+        {"id": "evt5", "title": "Essay Research", "date": (NOW + 5 * DAY).date().isoformat(), "startTime": "15:00", "endTime": "17:00", "duration": 120, "category": "study-session", "assignmentId": "asgn4", "module": "GE2101 - Communication", "description": "Research AI impact sources", "userId": "user1", "createdAt": NOW.isoformat()},
+    ]
+
     save_all("users", users)
     save_all("assignments", assignments)
     save_all("study_plans", [])
     save_all("help_requests", help_requests)
     save_all("discussions", discussions)
+    save_all("calendar_events", calendar_events)
+    save_all("flashcards", [])
+    save_all("attachments", [])
 
-    print(f"  Seeded: {len(users)} users, {len(assignments)} assignments, {len(help_requests)} help requests, {len(discussions)} discussions")
+    print(f"  Seeded: {len(users)} users, {len(assignments)} assignments, {len(help_requests)} help requests, {len(discussions)} discussions, {len(calendar_events)} calendar events")

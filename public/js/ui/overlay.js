@@ -46,6 +46,21 @@ function mount(markup, { actions, onMount, onClose, initialFocus } = {}) {
   render(el, markup);
   document.body.style.overflow = 'hidden';
 
+  // Track where mousedown originated to prevent scrim-close when interacting
+  // with native controls (select dropdowns, date pickers) that render outside the modal.
+  const overlay = el.querySelector('.overlay');
+  if (overlay) {
+    let mouseDownTarget = null;
+    overlay.addEventListener('mousedown', (e) => { mouseDownTarget = e.target; });
+    overlay.addEventListener('click', (e) => {
+      // Only close if BOTH mousedown AND click landed on the scrim itself
+      if (e.target === overlay && mouseDownTarget === overlay) {
+        closeOverlay();
+      }
+      mouseDownTarget = null;
+    });
+  }
+
   const panel = el.querySelector('.modal, .drawer');
   if (panel) {
     const target = (initialFocus && panel.querySelector(initialFocus))
@@ -90,7 +105,7 @@ const closeButton = html`
  */
 export function openModal({ title, description, body, foot, wide = false, actions, onMount, onClose, initialFocus }) {
   mount(html`
-    <div class="overlay" data-act="overlayScrim" role="presentation">
+    <div class="overlay" role="presentation">
       <div class="modal ${wide ? 'modal-wide' : ''}" role="dialog" aria-modal="true" aria-label="${title}">
         <div class="modal-head">
           <div>
@@ -105,7 +120,6 @@ export function openModal({ title, description, body, foot, wide = false, action
     </div>
   `, {
     actions: {
-      overlayScrim: (ds, el, event) => { if (event.target === el) closeOverlay(); },
       ...(actions || {}),
     },
     onMount,
@@ -120,7 +134,7 @@ export function openModal({ title, description, body, foot, wide = false, action
  */
 export function openDrawer({ title, eyebrow, body, foot, actions, onMount, onClose }) {
   mount(html`
-    <div class="drawer-scrim" data-act="overlayScrim" role="presentation"></div>
+    <div class="drawer-scrim" role="presentation"></div>
     <aside class="drawer" role="dialog" aria-modal="true" aria-label="${title}">
       <header class="drawer-head">
         <div class="grow">
@@ -133,8 +147,13 @@ export function openDrawer({ title, eyebrow, body, foot, actions, onMount, onClo
       ${foot ? html`<footer class="drawer-foot">${foot}</footer>` : raw('')}
     </aside>
   `, {
-    actions: { overlayScrim: () => closeOverlay(), ...(actions || {}) },
-    onMount,
+    actions: { ...(actions || {}) },
+    onMount: (el) => {
+      // Drawer scrim click-to-close
+      const scrim = el.querySelector('.drawer-scrim');
+      if (scrim) scrim.addEventListener('click', () => closeOverlay());
+      if (onMount) onMount(el);
+    },
     onClose,
   });
 }
